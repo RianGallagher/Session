@@ -7,6 +7,7 @@ import {
   Button,
   TouchableHighlight,
   Image,
+  ImageBackground,
   Alert
 } from 'react-native';
 
@@ -27,10 +28,10 @@ export default class LoginView extends Component {
   render() {
     return (
       <View style={styles.container}>
+      <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
         <Text style={styles.headerText}>Welcome</Text>
         <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/
->
+          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
               placeholder="Email"
               keyboardType="email-address"
@@ -39,8 +40,7 @@ export default class LoginView extends Component {
         </View>
 
         <View style={styles.inputContainer}>
-          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/key-2/ultraviolet/50/3498db'}}/
->
+          <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/key-2/ultraviolet/50/3498db'}}/>
           <TextInput style={styles.inputs}
               placeholder="Password"
               secureTextEntry={true}
@@ -56,17 +56,18 @@ export default class LoginView extends Component {
           <Text style={styles.spotifyText}>Spotify</Text>
         </TouchableHighlight>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.facebookButton]} onPress={() => this.onClickListener('loginFacebook')}>
-          <Text style={styles.facebookText}>Facebook</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => this.onClickListener('logingoogle')}>
+          <Text style={styles.googleText}>Google</Text>
         </TouchableHighlight>
 
         <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
-            <Text>Forgot yoooour password?</Text>
+            <Text style={styles.sundryText}>Forgot your password?</Text>
         </TouchableHighlight>
 
         <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('register')}>
-            <Text>Register</Text>
+            <Text style={styles.sundryText}>Register</Text>
         </TouchableHighlight>
+        </ImageBackground>
       </View>
     );
   }
@@ -78,6 +79,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FF8300',
+  },
+  imgBackground: {
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   inputContainer: {
       borderBottomColor: '#F5FCFF',
@@ -112,29 +120,33 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   loginButton: {
-    backgroundColor: "#00b5ec",
+    backgroundColor: "#000080",
   },
   loginText: {
-    color: 'white',
+    color: '#c0c0c0',
     fontSize: 20
   },
   spotifyButton: {
-    backgroundColor: "#1db954"
+    backgroundColor: "#1DB954"
   },
   spotifyText: {
     color: "#191414",
     fontSize: 20
   },
-  facebookButton: {
-    backgroundColor: "#3b5998"
+  googleButton: {
+    backgroundColor: "#DB4437"
   },
-  facebookText: {
-    color: "black",
+  googleText: {
+    color: "white",
     fontSize: 20
   },
   headerText: {
-    color: "#666",
+    color: "#c0c0c0",
     fontSize: 44,
     marginBottom: 50
+  },
+  sundryText: {
+    color: "#c0c0c0",
+    fontSize: 20,
   }
 });
