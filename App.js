@@ -82,30 +82,41 @@ class LoginView extends React.Component {
 //Spotify Login
 
 class SpotifyLoginInitial extends React.Component {
+
+  onClickListener = (viewId) => {
+    Alert.alert("Alert", "Button pressed " + viewId);
+  }
+
   render() {
 
   //should be populated via spotify API
 
     const items = [
+  { name: 'Based on your Spotify history, you seem to love...', code: '#666'},
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
+  { name: 'Continue', code: 'white'},
   ];
   //  <Text style={styles.itemCode}>{item.code}</Text>
   return (
-        <GridView
-          itemDimension={130}
-          items={items}
-          style={styles.gridView}
-          renderItem={item => (
-            <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-              <Text style={styles.itemName}>{item.name}</Text>
-            </View>
-          )}
-        />
+          <GridView
+            itemDimension={130}
+            items={items}
+            style={styles.gridView}
+            renderItem={item => (
+              <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+              {item.code!=='#666' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
+              {item.code=='white' ?
+              <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('Moving on swiftly')}>
+                <Text>Continue</Text>
+              </TouchableHighlight> : null }
+              </View>
+            )}
+          />
       );
     }
   }
@@ -208,6 +219,10 @@ const styles = StyleSheet.create({
     fontSize: 12,
     color: '#fff',
   },
+  gridPrompts: {
+    color: '#c0c0c0',
+    fontSize: 18
+  }
 });
 
 const RootStack = createStackNavigator(
