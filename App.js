@@ -130,16 +130,33 @@ class SpotifyLoginInitial extends React.Component {
     render(){
       return(
         <View style={styles.container}>
-        <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
-        <Text style={styles.headerText}>Are we right?</Text>
-        <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.onClickListener('Hell Yeah')}>
-          <Text style={styles.spotifyText}>Yeah, let's go!</Text>
-        </TouchableHighlight>
+          <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
+            <Text style={styles.headerText}>Are we right?</Text>
+            <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.props.navigation.navigate('ProfileScreen')}>
+              <Text style={styles.spotifyText}>Yeah, let's go!</Text>
+            </TouchableHighlight>
 
-        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('First train to Nopeville')}>
-          <Text style={styles.loginText}>No, pick manually</Text>
-        </TouchableHighlight>
-        </ImageBackground>
+            <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('First train to Nopeville')}>
+              <Text style={styles.loginText}>No, pick manually</Text>
+            </TouchableHighlight>
+          </ImageBackground>
+        </View>
+      );
+    }
+  }
+
+  class ProfileScreen extends React.Component {
+
+    onClickListener = (viewId) => {
+      Alert.alert("Alert", "Button pressed " + viewId);
+    }
+
+    render(){
+      return(
+        <View style={styles.container}>
+          <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
+            <Text style={styles.headerText}>Welcome Home Fuckface, This is 3 from the wireframes, The profile/home screen</Text>
+          </ImageBackground>
         </View>
       );
     }
@@ -222,9 +239,9 @@ const styles = StyleSheet.create({
     fontSize: 20
   },
   gridView: {
-  backgroundColor: '#666',
-  paddingTop: 25,
-  flex: 1,
+    backgroundColor: '#666',
+    paddingTop: 25,
+    flex: 1,
   },
   itemContainer: {
     justifyContent: 'center',
@@ -272,6 +289,12 @@ const RootStack = createStackNavigator(
     },
     UserAssertion: {
       screen: UserAssertion,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    ProfileScreen: {
+      screen: ProfileScreen,
       navigationOptions: {
         header: null,
       }
