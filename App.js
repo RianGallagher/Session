@@ -121,6 +121,8 @@ class SpotifyLoginInitial extends React.Component {
     }
   }
 
+  // 2B
+
   class UserAssertion extends React.Component {
 
     onClickListener = (viewId) => {
@@ -144,6 +146,8 @@ class SpotifyLoginInitial extends React.Component {
       );
     }
   }
+
+  // 3 
 
   class ProfileScreen extends React.Component {
 
