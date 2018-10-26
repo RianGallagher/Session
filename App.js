@@ -92,14 +92,14 @@ class SpotifyLoginInitial extends React.Component {
   //should be populated via spotify API
 
     const items = [
-  { name: 'Based on your Spotify history, you seem to love...', code: '#666'},
+  { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
   { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
   { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-  { name: 'Continue', code: 'white'},
+  { name: '', code: '#666', type: 'button'},
   ];
   //  <Text style={styles.itemCode}>{item.code}</Text>
   return (
@@ -109,14 +109,38 @@ class SpotifyLoginInitial extends React.Component {
             style={styles.gridView}
             renderItem={item => (
               <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-              {item.code!=='#666' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
-              {item.code=='white' ?
-              <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('Moving on swiftly')}>
-                <Text>Continue</Text>
+              {item.type!=='info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
+              {item.type=='button' ?
+              <TouchableHighlight onPress={() => this.props.navigation.navigate('UserAssertion')}>
+                <Text style={styles.gridButton}>Continue</Text>
               </TouchableHighlight> : null }
               </View>
             )}
           />
+      );
+    }
+  }
+
+  class UserAssertion extends React.Component {
+
+    onClickListener = (viewId) => {
+      Alert.alert("Alert", "Button pressed " + viewId);
+    }
+
+    render(){
+      return(
+        <View style={styles.container}>
+        <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
+        <Text style={styles.headerText}>Are we right?</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.onClickListener('Hell Yeah')}>
+          <Text style={styles.spotifyText}>Yeah, let's go!</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('First train to Nopeville')}>
+          <Text style={styles.loginText}>No, pick manually</Text>
+        </TouchableHighlight>
+        </ImageBackground>
+        </View>
       );
     }
   }
@@ -221,7 +245,14 @@ const styles = StyleSheet.create({
   },
   gridPrompts: {
     color: '#c0c0c0',
-    fontSize: 18
+    fontSize: 18,
+    fontWeight: '600'
+  },
+  gridButton: {
+    paddingTop: 8,
+    color: '#fff',
+    fontSize: 18,
+    fontWeight: '600'
   }
 });
 
@@ -235,6 +266,12 @@ const RootStack = createStackNavigator(
     },
     SpotifyInitial: {
       screen: SpotifyLoginInitial,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    UserAssertion: {
+      screen: UserAssertion,
       navigationOptions: {
         header: null,
       }
