@@ -133,7 +133,7 @@ class SpotifyLoginInitial extends React.Component {
           <ImageBackground source={require('./img/vinylSplash.jpg')} style={styles.imgBackground}>
             <Text style={styles.headerText}>Are we right?</Text>
             <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.props.navigation.navigate('ProfileScreen')}>
-              <Text style={styles.spotifyText}>Yeah, let's go!</Text>
+              <Text style={styles.spotifyText}>Yeah!</Text>
             </TouchableHighlight>
 
             <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('AltLogin')}>
