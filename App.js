@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import {
-  createStackNavigator,
-} from 'react-navigation';
+import { createStackNavigator } from 'react-navigation';
 import {
   StyleSheet,
   Text,
@@ -54,7 +52,7 @@ class LoginView extends React.Component {
                 onChangeText={(password) => this.setState({password})}/>
           </View>
 
-          <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('login')}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('ProfileScreen')}>
             <Text style={styles.loginText}>Login</Text>
           </TouchableHighlight>
 
@@ -62,7 +60,7 @@ class LoginView extends React.Component {
             <Text style={styles.spotifyText}>Spotify</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => this.onClickListener('logingoogle')}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => this.props.navigation.navigate('AltLogin')}>
             <Text style={styles.googleText}>Google</Text>
           </TouchableHighlight>
 
@@ -138,7 +136,7 @@ class SpotifyLoginInitial extends React.Component {
               <Text style={styles.spotifyText}>Yeah, let's go!</Text>
             </TouchableHighlight>
 
-            <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.onClickListener('First train to Nopeville')}>
+            <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('AltLogin')}>
               <Text style={styles.loginText}>No, pick manually</Text>
             </TouchableHighlight>
           </ImageBackground>
@@ -147,7 +145,50 @@ class SpotifyLoginInitial extends React.Component {
     }
   }
 
-  // 3 
+  // 2C/2D
+
+  class AltLogin extends React.Component {
+
+    onClickListener = (viewId) => {
+      Alert.alert("Alert", "Button pressed " + viewId);
+    }
+
+    render() {
+
+    //should be populated via spotify API (most popular listings), have to find a way to make gridView expand on click
+
+      const items = [
+    { name: 'Tell us what you love...', code: '#666', type: 'info'},
+    { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
+    { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
+    { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
+    { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
+    { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
+    { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
+    { name: '', code: '#666', type: 'button'},
+    ];
+    //  <Text style={styles.itemCode}>{item.code}</Text>
+    return (
+            <GridView
+              itemDimension={130}
+              items={items}
+              style={styles.gridView}
+              renderItem={item => (
+                <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+                {item.type!=='info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
+                {item.type=='button' ?
+                <TouchableHighlight onPress={() => this.props.navigation.navigate('ProfileScreen')}>
+                  <Text style={styles.gridButton}>Continue</Text>
+                </TouchableHighlight> : null }
+                </View>
+              )}
+            />
+        );
+      }
+    }
+
+
+  // 3
 
   class ProfileScreen extends React.Component {
 
@@ -293,6 +334,12 @@ const RootStack = createStackNavigator(
     },
     UserAssertion: {
       screen: UserAssertion,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    AltLogin: {
+      screen: AltLogin,
       navigationOptions: {
         header: null,
       }
