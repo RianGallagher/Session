@@ -12,6 +12,7 @@ import {
   Alert
 } from 'react-native';
 import GridView, { SuperGridSectionList } from 'react-native-super-grid';
+import { WebBrowser } from 'expo';
 
 //Home Screen
 
@@ -27,6 +28,15 @@ class LoginView extends React.Component {
 
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed " + viewId);
+  }
+
+  spotifyLogin = async() => {
+    console.log('hello from spotify');
+    let result = await WebBrowser.openBrowserAsync('https://expo.io');
+    console.log(result)
+    // const client_id = 'f7410f08c2064e4c9517603f56ed4089';
+    // const client_secret = 'c9d93bd16c9847d18d054549dfcea9e6';
+    // const redirect_uri = 'http://localhost:8888/callback';
   }
 
   render() {
@@ -56,7 +66,7 @@ class LoginView extends React.Component {
             <Text style={styles.loginText}>Login</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.props.navigation.navigate('SpotifyInitial')}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={this.spotifyLogin/*this.props.navigation.navigate('SpotifyInitial')*/}>
             <Text style={styles.spotifyText}>Spotify</Text>
           </TouchableHighlight>
 
