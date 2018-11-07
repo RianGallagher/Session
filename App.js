@@ -13,7 +13,6 @@ import {
 } from 'react-native';
 import GridView, { SuperGridSectionList } from 'react-native-super-grid';
 import { AuthSession } from 'expo';
-const querystring = ('querystring');
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 //Home Screen
@@ -56,7 +55,6 @@ class LoginView extends React.Component {
         '&redirect_uri=' + encodeURIComponent(redirectUrl) +
         '&state=' + state
     });
-    console.log(result)
   }
 
   render() {
