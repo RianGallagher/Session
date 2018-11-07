@@ -12,8 +12,10 @@ import {
   Alert
 } from 'react-native';
 import GridView, { SuperGridSectionList } from 'react-native-super-grid';
-import { WebBrowser } from 'expo';
+import { AuthSession } from 'expo';
+const querystring = ('querystring');
 
+const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 //Home Screen
 
 class LoginView extends React.Component {
@@ -30,13 +32,31 @@ class LoginView extends React.Component {
     Alert.alert("Alert", "Button pressed " + viewId);
   }
 
+  generateRandomString = (length) => {
+    let text = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  };
+
   spotifyLogin = async() => {
-    console.log('hello from spotify');
-    let result = await WebBrowser.openBrowserAsync('https://expo.io');
+    let redirectUrl = AuthSession.getRedirectUrl();
+    let scope = 'user-library-read user-top-read';
+    let state = this.generateRandomString(16);
+
+    let result = await AuthSession.startAsync({
+      authUrl:
+        'https://accounts.spotify.com/authorize?' +
+        '&response_type=code' +
+        '&client_id=' + client_id +
+        '&scope=' + encodeURIComponent(scope) +
+        '&redirect_uri=' + encodeURIComponent(redirectUrl) +
+        '&state=' + state
+    });
     console.log(result)
-    // const client_id = 'f7410f08c2064e4c9517603f56ed4089';
-    // const client_secret = 'c9d93bd16c9847d18d054549dfcea9e6';
-    // const redirect_uri = 'http://localhost:8888/callback';
   }
 
   render() {
