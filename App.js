@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
+import token from './token'
+// import * as base64 from 'base-64';
 import {
   StyleSheet,
   Text,
@@ -15,6 +17,7 @@ import GridView, { SuperGridSectionList } from 'react-native-super-grid';
 import { AuthSession } from 'expo';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
+
 //Home Screen
 
 class LoginView extends React.Component {
@@ -55,6 +58,13 @@ class LoginView extends React.Component {
         '&redirect_uri=' + encodeURIComponent(redirectUrl) +
         '&state=' + state
     });
+
+    if(result.type !== 'success'){
+      Alert.alert('Spotify login unsuccessful');
+      return;
+    }
+    const newToken = await token();
+    this.props.navigation.navigate('SpotifyInitial');
   }
 
   render() {
@@ -84,7 +94,7 @@ class LoginView extends React.Component {
             <Text style={styles.loginText}>Login</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={this.spotifyLogin/*this.props.navigation.navigate('SpotifyInitial')*/}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={this.spotifyLogin}>
             <Text style={styles.spotifyText}>Spotify</Text>
           </TouchableHighlight>
 
