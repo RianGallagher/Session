@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
+import token from './token'
 import {
   StyleSheet,
   Text,
@@ -12,6 +13,9 @@ import {
   Alert
 } from 'react-native';
 import GridView, { SuperGridSectionList } from 'react-native-super-grid';
+import { AuthSession } from 'expo';
+
+const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
 //Home Screen
 
@@ -27,6 +31,39 @@ class LoginView extends React.Component {
 
   onClickListener = (viewId) => {
     Alert.alert("Alert", "Button pressed " + viewId);
+  }
+
+  generateRandomString = (length) => {
+    let text = '';
+    let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+
+    for (let i = 0; i < length; i++) {
+      text += possible.charAt(Math.floor(Math.random() * possible.length));
+    }
+    return text;
+  };
+
+  spotifyLogin = async() => {
+    let redirectUrl = AuthSession.getRedirectUrl();
+    let scope = 'user-library-read user-top-read';
+    let state = this.generateRandomString(16);
+
+    let result = await AuthSession.startAsync({
+      authUrl:
+        'https://accounts.spotify.com/authorize?' +
+        '&response_type=code' +
+        '&client_id=' + client_id +
+        '&scope=' + encodeURIComponent(scope) +
+        '&redirect_uri=' + encodeURIComponent(redirectUrl) +
+        '&state=' + state
+    });
+
+    if(result.type !== 'success'){
+      Alert.alert('Spotify login unsuccessful');
+      return;
+    }
+    const newToken = await token();
+    this.props.navigation.navigate('SpotifyInitial');
   }
 
   render() {
@@ -56,7 +93,7 @@ class LoginView extends React.Component {
             <Text style={styles.loginText}>Login</Text>
           </TouchableHighlight>
 
-          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.props.navigation.navigate('SpotifyInitial')}>
+          <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={this.spotifyLogin}>
             <Text style={styles.spotifyText}>Spotify</Text>
           </TouchableHighlight>
 

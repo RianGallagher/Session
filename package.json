@@ -9,6 +9,7 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "base-64": "^0.1.0",
     "cli": "^1.0.1",
     "expo": "^30.0.1",
     "expo-cli": "^2.2.3",
