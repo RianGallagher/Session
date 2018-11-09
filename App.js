@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
 import token from './token'
-// import * as base64 from 'base-64';
 import {
   StyleSheet,
   Text,
