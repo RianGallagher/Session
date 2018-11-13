@@ -1,16 +1,5 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import {
-  StyleSheet,
-  Text,
-  View,
-  TextInput,
-  Button,
-  TouchableHighlight,
-  Image,
-  ImageBackground,
-  Alert
-} from 'react-native';
 import GridView, { SuperGridSectionList } from 'react-native-super-grid';
 import Collapsible from 'react-native-collapsible';
 import AltLogin from './components/AltLogin';
