@@ -6,11 +6,6 @@ const client_secret = 'c9d93bd16c9847d18d054549dfcea9e6';
 const credentials = base64.encode(client_id + ':' + client_secret);
 
 export default async (code, redirectUrl) => {
-  const opts = {
-    grant_type: 'authorization_code',
-    code: code,
-    redirect_uri: redirectUrl
-  };
   const res = await fetch(apiPrefix, {
     method: 'POST',
     headers: {
