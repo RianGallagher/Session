@@ -33,16 +33,20 @@ export default class ProfileScreen extends React.Component {
                 onChangeText={(query) => this.setState({query})}/>
           </View>
           <TouchableHighlight onPress={() => this.props.navigation.navigate('ChatScreen')}>
-          <View style={{width: 325, height: 225, backgroundColor: 'powderblue', marginBottom: 10}}>
-          <Text>Your Groups/Followed</Text>
-          </View>
+            <View style={{width: 325, height: 225, backgroundColor: 'powderblue', marginBottom: 10}}>
+            <Text>Your Groups/Followed</Text>
+            </View>
           </TouchableHighlight>
-          <View style={{width: 325, height: 125, backgroundColor: 'skyblue', marginBottom: 10}}>
-          <Text>upcoming Events</Text>
-          </View>
-          <View style={{width: 325, height: 75, backgroundColor: 'steelblue'}}>
-          <Text>Suggested</Text>
-          </View>
+          <TouchableHighlight onPress={() => this.props.navigation.navigate('Events')}>
+            <View style={{width: 325, height: 125, backgroundColor: 'skyblue', marginBottom: 10}}>
+            <Text>upcoming Events</Text>
+            </View>
+          </TouchableHighlight>
+          <TouchableHighlight onPress={() => this.props.navigation.navigate('SuggestedList')}>
+            <View style={{width: 325, height: 75, backgroundColor: 'steelblue'}}>
+            <Text>Suggested</Text>
+            </View>
+          </TouchableHighlight>
           </ImageBackground>
         </View>
       );
