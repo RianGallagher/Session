@@ -5,6 +5,7 @@ import SpotifyLoginInitial from './components/SpotifyLoginInitial';
 import UserAssertion from './components/UserAssertion';
 import ProfileScreen from './components/ProfileScreen';
 import LoginView from './components/LoginView';
+import ChatScreen from './components/ChatScreen';
 
 const RootStack = createStackNavigator(
   {
@@ -34,6 +35,12 @@ const RootStack = createStackNavigator(
     },
     ProfileScreen: {
       screen: ProfileScreen,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    ChatScreen: {
+      screen: ChatScreen,
       navigationOptions: {
         header: null,
       }

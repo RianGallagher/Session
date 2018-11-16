@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 import token from '../token';
 import { AuthSession } from 'expo';
+
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
 export default class LoginView extends React.Component {
