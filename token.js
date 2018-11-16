@@ -12,7 +12,9 @@ export default async (code, redirectUrl) => {
       Authorization: 'Basic ' + credentials,
       'Content-Type': 'application/x-www-form-urlencoded',
     },
-    body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirectUrl,
+    body: 'grant_type=authorization_code&' +
+          'code=' + code +
+          '&redirect_uri=' + redirectUrl,
   });
   const json = await res.json();
   token = json.access_token;
