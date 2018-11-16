@@ -5,6 +5,7 @@ import loginView from '../components/LoginView';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
+//Container component that manages state but renders no HTML
 export default class loginContainer extends React.Component {
 
   constructor(props) {
@@ -53,8 +54,8 @@ export default class loginContainer extends React.Component {
       return;
     }
     const newToken = await token(result.params.code, redirectUrl);
+
     this.setState({token: newToken, loggedIn: true});
-    console.log('state', this.state);
     this.props.navigation.navigate('SpotifyInitial');
   }
 

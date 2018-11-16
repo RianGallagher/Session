@@ -11,6 +11,7 @@ import {
   Alert
 } from 'react-native';
 
+//pure presentational, stateless Component
 LoginView = (props) => {
   return (
     <View style={styles.container}>
