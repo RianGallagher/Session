@@ -4,12 +4,12 @@ import AltLogin from './components/AltLogin';
 import SpotifyLoginInitial from './components/SpotifyLoginInitial';
 import UserAssertion from './components/UserAssertion';
 import ProfileScreen from './components/ProfileScreen';
-import LoginView from './components/LoginView';
+import loginContainer from './containers/loginContainer';
 
 const RootStack = createStackNavigator(
   {
     Home: {
-      screen: LoginView,
+      screen: loginContainer,
       navigationOptions: {
         header: null,
       }
