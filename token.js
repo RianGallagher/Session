@@ -5,14 +5,19 @@ const client_secret = 'c9d93bd16c9847d18d054549dfcea9e6';
 
 const credentials = base64.encode(client_id + ':' + client_secret);
 
-export default async () => {
+export default async (code, redirectUrl) => {
+  const opts = {
+    grant_type: 'authorization_code',
+    code: code,
+    redirect_uri: redirectUrl
+  };
   const res = await fetch(apiPrefix, {
     method: 'POST',
     headers: {
       Authorization: 'Basic ' + credentials,
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-type': 'application/x-www-form-urlencoded',
     },
-    body: 'grant_type=client_credentials'
+    body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirectUrl,
   });
   const json = await res.json();
   token = json.access_token;
