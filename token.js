@@ -10,7 +10,7 @@ export default async (code, redirectUrl) => {
     method: 'POST',
     headers: {
       Authorization: 'Basic ' + credentials,
-      'Content-type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded',
     },
     body: 'grant_type=authorization_code&code=' + code + '&redirect_uri=' + redirectUrl,
   });
