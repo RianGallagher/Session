@@ -48,7 +48,7 @@ export default class LoginView extends React.Component {
         'https://accounts.spotify.com/authorize?' +
         '&response_type=code' +
         '&client_id=' + client_id +
-        '&scope=' + encodeURIComponent(scope) +
+        (scope ? '&scope' + encodeURIComponent(scope) : '') +
         '&redirect_uri=' + encodeURIComponent(redirectUrl) +
         '&state=' + state
     });
@@ -57,7 +57,7 @@ export default class LoginView extends React.Component {
       Alert.alert('Spotify login unsuccessful');
       return;
     }
-    const newToken = await token();
+    const newToken = await token(result.params.code, redirectUrl);
     this.props.navigation.navigate('SpotifyInitial');
   }
 
