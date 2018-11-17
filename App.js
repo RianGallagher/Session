@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import SpotifyLoginInitial from './components/SpotifyLoginInitial';
-import UserAssertion from './components/UserAssertion';
 import ProfileScreen from './components/ProfileScreen';
 import loginContainer from './containers/loginContainer';
 import altLoginContainer from './containers/altLoginContainer';
 import spotifyLoginContainer from './containers/spotifyLoginContainer';
+import userAssertionContainer from './containers/userAssertionContainer';
 
 const RootStack = createStackNavigator(
   {
@@ -22,7 +21,7 @@ const RootStack = createStackNavigator(
       }
     },
     UserAssertion: {
-      screen: UserAssertion,
+      screen: userAssertionContainer,
       navigationOptions: {
         header: null,
       }

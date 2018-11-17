@@ -30,7 +30,7 @@ export default class altLoginContainer extends React.Component {
     render() {
       console.log(this.state.items);
       return (
-          <AltLogin items={this.state.items}/>
+          <AltLogin items={this.state.items} navigation={this.props.navigation} />
       )
     }
 }

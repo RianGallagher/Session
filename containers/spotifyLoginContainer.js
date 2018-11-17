@@ -24,7 +24,7 @@ export default class spotifyLoginContainer extends React.Component {
 
   render() {
     return (
-      <SpotifyLoginInitial items={this.state.items} />
+      <SpotifyLoginInitial items={this.state.items} navigation={this.props.navigation} />
     );
   }
 }

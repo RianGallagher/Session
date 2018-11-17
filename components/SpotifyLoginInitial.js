@@ -20,7 +20,7 @@ export default SpotifyLoginInitial = (props) => {
         <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
         {item.type!=='info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
         {item.type=='button' ?
-        <TouchableHighlight onPress={() => this.props.navigation.navigate('UserAssertion')}>
+        <TouchableHighlight onPress={() => props.navigation.navigate('UserAssertion')}>
           <Text style={styles.gridButton}>Continue</Text>
         </TouchableHighlight> : null }
         </View>

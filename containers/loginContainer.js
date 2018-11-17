@@ -59,6 +59,7 @@ export default class loginContainer extends React.Component {
   }
 
   render() {
+      console.log('navigation', this.props.navigation);
       return (
         <LoginView spotifyLogin={this.spotifyLogin} navigation={this.props.navigation}/>
       );

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,31 +10,24 @@ import {
   Alert
 } from 'react-native';
 
-export default class UserAssertion extends React.Component {
+export default UserAssertion = (props) => {
+  return(
+    <View style={styles.container}>
+      <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
+        <Text style={styles.headerText}>Are we right?</Text>
+        <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => props.navigation.navigate('ProfileScreen')}>
+          <Text style={styles.spotifyText}>Yeah!</Text>
+        </TouchableHighlight>
 
-    onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed " + viewId);
-    }
+        <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.navigation.navigate('AltLogin')}>
+          <Text style={styles.loginText}>No, pick manually</Text>
+        </TouchableHighlight>
+      </ImageBackground>
+    </View>
+  );
+}
 
-    render(){
-      return(
-        <View style={styles.container}>
-          <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-            <Text style={styles.headerText}>Are we right?</Text>
-            <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => this.props.navigation.navigate('ProfileScreen')}>
-              <Text style={styles.spotifyText}>Yeah!</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => this.props.navigation.navigate('AltLogin')}>
-              <Text style={styles.loginText}>No, pick manually</Text>
-            </TouchableHighlight>
-          </ImageBackground>
-        </View>
-      );
-    }
-  }
-
-  const styles = StyleSheet.create({
+const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
