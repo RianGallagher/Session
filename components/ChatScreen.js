@@ -8,8 +8,11 @@ const CHATKIT_ROOM_ID = 19374136;
 const CHATKIT_USER_NAME = 'OrrinBlake1';
 
 export default class Example extends React.Component {
-  state = {
-    messages: [],
+  constructor(){
+    super();
+    this.state = {
+      messages: [],
+    }
   }
 
   componentDidMount() {

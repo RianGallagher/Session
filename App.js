@@ -5,8 +5,8 @@ import altLoginContainer from './containers/altLoginContainer';
 import spotifyLoginContainer from './containers/spotifyLoginContainer';
 import userAssertionContainer from './containers/userAssertionContainer';
 import profileScreenContainer from './containers/profileScreenContainer';
+import eventsContainer from './containers/eventsContainer';
 import ChatScreen from './components/ChatScreen';
-import Events from './components/Events';
 import SuggestedList from './components/SuggestedList';
 
 const RootStack = createStackNavigator(
@@ -48,7 +48,7 @@ const RootStack = createStackNavigator(
       }
     },
     Events: {
-      screen: Events,
+      screen: eventsContainer,
       navigationOptions: {
         header: null,
       }
