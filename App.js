@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import ProfileScreen from './components/ProfileScreen';
 import loginContainer from './containers/loginContainer';
 import altLoginContainer from './containers/altLoginContainer';
 import spotifyLoginContainer from './containers/spotifyLoginContainer';
 import userAssertionContainer from './containers/userAssertionContainer';
+import profileScreenContainer from './containers/profileScreenContainer';
 
 const RootStack = createStackNavigator(
   {
@@ -33,7 +33,7 @@ const RootStack = createStackNavigator(
       }
     },
     ProfileScreen: {
-      screen: ProfileScreen,
+      screen: profileScreenContainer,
       navigationOptions: {
         header: null,
       }

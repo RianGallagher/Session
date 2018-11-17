@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,22 +9,15 @@ import {
   Alert
 } from 'react-native';
 
-export default class ProfileScreen extends React.Component {
-
-    onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed " + viewId);
-    }
-
-    render(){
-      return(
-        <View style={styles.container}>
-          <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-            <Text style={styles.headerText}>Welcome Home Fuckface, This is 3 from the wireframes, The profile/home screen</Text>
-          </ImageBackground>
-        </View>
-      );
-    }
-  }
+export default ProfileScreen = () => {
+  return(
+    <View style={styles.container}>
+      <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
+        <Text style={styles.headerText}>Welcome Home Fuckface, This is 3 from the wireframes, The profile/home screen</Text>
+      </ImageBackground>
+    </View>
+  );
+}
 
   const styles = StyleSheet.create({
     container: {
