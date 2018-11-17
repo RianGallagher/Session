@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
+import loginView from '../components/LoginView';
 import token from '../token';
 import { AuthSession } from 'expo';
-import loginView from '../components/LoginView';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
 //Container component that manages state but renders no HTML
 export default class loginContainer extends React.Component {
-
   constructor(props) {
     super(props);
     state = {

@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 
 //pure presentational, stateless Component
-LoginView = (props) => {
+export default LoginView = (props) => {
   return (
     <View style={styles.container}>
     <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
