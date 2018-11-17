@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import AltLogin from './components/AltLogin';
 import SpotifyLoginInitial from './components/SpotifyLoginInitial';
 import UserAssertion from './components/UserAssertion';
 import ProfileScreen from './components/ProfileScreen';
 import loginContainer from './containers/loginContainer';
 import altLoginContainer from './containers/altLoginContainer';
+import spotifyLoginContainer from './containers/spotifyLoginContainer';
 
 const RootStack = createStackNavigator(
   {
@@ -16,7 +16,7 @@ const RootStack = createStackNavigator(
       }
     },
     SpotifyInitial: {
-      screen: SpotifyLoginInitial,
+      screen: spotifyLoginContainer,
       navigationOptions: {
         header: null,
       }
