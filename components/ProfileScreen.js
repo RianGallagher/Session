@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,47 +11,36 @@ import {
   Alert
 } from 'react-native';
 
-export default class ProfileScreen extends React.Component {
-
-    onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed " + viewId);
-    }
-
-    _onPressButton() {
-      Alert.alert('You tapped the button!')
-    }
-
-    render(){
-      return(
-        <View style={{flex: 1, flexDirection: 'column'}}>
-          <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-          <View style={styles.inputContainer}>
-            <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/color/search'}}/>
-            <TextInput style={styles.inputs}
-                placeholder="Search"
-                underlineColorAndroid='transparent'
-                onChangeText={(query) => this.setState({query})}/>
-          </View>
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('ChatScreen')}>
-            <View style={{width: 325, height: 225, backgroundColor: 'powderblue', marginBottom: 10}}>
-            <Text>Your Groups/Followed</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('Events')}>
-            <View style={{width: 325, height: 125, backgroundColor: 'skyblue', marginBottom: 10}}>
-            <Text>upcoming Events</Text>
-            </View>
-          </TouchableHighlight>
-          <TouchableHighlight onPress={() => this.props.navigation.navigate('SuggestedList')}>
-            <View style={{width: 325, height: 75, backgroundColor: 'steelblue'}}>
-            <Text>Suggested</Text>
-            </View>
-          </TouchableHighlight>
-          </ImageBackground>
+export default ProfileScreen = (props) => {
+  return(
+    <View style={{flex: 1, flexDirection: 'column'}}>
+      <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
+      <View style={styles.inputContainer}>
+        <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/color/search'}}/>
+        <TextInput style={styles.inputs}
+            placeholder="Search"
+            underlineColorAndroid='transparent'
+            onChangeText={(query) => this.setState({query})}/>
+      </View>
+      <TouchableHighlight onPress={() => props.navigation.navigate('ChatScreen')}>
+        <View style={{width: 325, height: 225, backgroundColor: 'powderblue', marginBottom: 10}}>
+        <Text>Your Groups/Followed</Text>
         </View>
-      );
-    }
-  }
+      </TouchableHighlight>
+      <TouchableHighlight onPress={() => props.navigation.navigate('Events')}>
+        <View style={{width: 325, height: 125, backgroundColor: 'skyblue', marginBottom: 10}}>
+        <Text>upcoming Events</Text>
+        </View>
+      </TouchableHighlight>
+      <TouchableHighlight onPress={() => props.navigation.navigate('SuggestedList')}>
+        <View style={{width: 325, height: 75, backgroundColor: 'steelblue'}}>
+        <Text>Suggested</Text>
+        </View>
+      </TouchableHighlight>
+      </ImageBackground>
+    </View>
+  );
+}
 
 
   const styles = StyleSheet.create({

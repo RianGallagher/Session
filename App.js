@@ -1,42 +1,42 @@
 import React, { Component } from 'react';
 import { createStackNavigator } from 'react-navigation';
-import AltLogin from './components/AltLogin';
-import SpotifyLoginInitial from './components/SpotifyLoginInitial';
-import UserAssertion from './components/UserAssertion';
-import ProfileScreen from './components/ProfileScreen';
-import LoginView from './components/LoginView';
+import loginContainer from './containers/loginContainer';
+import altLoginContainer from './containers/altLoginContainer';
+import spotifyLoginContainer from './containers/spotifyLoginContainer';
+import userAssertionContainer from './containers/userAssertionContainer';
+import profileScreenContainer from './containers/profileScreenContainer';
+import eventsContainer from './containers/eventsContainer';
+import suggestedListContainer from './containers/suggestedListContainer';
 import ChatScreen from './components/ChatScreen';
-import Events from './components/Events';
-import SuggestedList from './components/SuggestedList';
 
 const RootStack = createStackNavigator(
   {
     Home: {
-      screen: LoginView,
+      screen: loginContainer,
       navigationOptions: {
         header: null,
       }
     },
     SpotifyInitial: {
-      screen: SpotifyLoginInitial,
+      screen: spotifyLoginContainer,
       navigationOptions: {
         header: null,
       }
     },
     UserAssertion: {
-      screen: UserAssertion,
+      screen: userAssertionContainer,
       navigationOptions: {
         header: null,
       }
     },
     AltLogin: {
-      screen: AltLogin,
+      screen: altLoginContainer,
       navigationOptions: {
         header: null,
       }
     },
     ProfileScreen: {
-      screen: ProfileScreen,
+      screen: profileScreenContainer,
       navigationOptions: {
         header: null,
       }
@@ -48,13 +48,13 @@ const RootStack = createStackNavigator(
       }
     },
     Events: {
-      screen: Events,
+      screen: eventsContainer,
       navigationOptions: {
         header: null,
       }
     },
     SuggestedList: {
-      screen: SuggestedList,
+      screen: suggestedListContainer,
       navigationOptions: {
         header: null,
       }
