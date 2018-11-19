@@ -1,8 +1,8 @@
-import { eventEmitter } from 'events';
+import { EventEmitter } from 'events';
 import dispatcher from '../dispatcher';
 
-class exampleStore extends eventEmitter {
-  constructer() {
+class ExampleStore extends EventEmitter {
+  constructor() {
     super();
     this.thing = {
       items: [{name: 'Rian', age: 21}]
@@ -10,13 +10,14 @@ class exampleStore extends eventEmitter {
   }
   updateItems(data){
     this.thing.items = data;
+    this.emit('update');
   }
   getAll(){
     return this.thing;
   }
   handleActions(action){
     switch(action.type) {
-      case: 'UPATE': this.updateItems(action.data); break;
+      case 'UPDATE': this.updateItems(action.data); break;
       default: {
         console.log('Invalid action');
       }
@@ -24,7 +25,7 @@ class exampleStore extends eventEmitter {
   }
 }
 
-const exampleStore = new exampleStore();
+const exampleStore = new ExampleStore();
 dispatcher.register(exampleStore.handleActions.bind(exampleStore));
 
 export default exampleStore;
