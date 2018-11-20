@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import SpotifyLoginInitial from '../components/SpotifyLoginInitial';
 import spotifyStore from '../stores/spotifyStore';
-// import exampleStore from '../stores/exampleStore';
-// import * as exampleActions from '../actions/exampleActions';
 
 export default class spotifyLoginContainer extends React.Component {
   constructor(props){
@@ -43,7 +41,6 @@ export default class spotifyLoginContainer extends React.Component {
 
   handleUpdate(){
     this.getSpotifySoundProfile();
-    // exampleActions.updateItems([{name: 'Hello', code: '#3498db'}])
   }
 
   onClickListener = (viewId) => {
