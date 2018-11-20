@@ -27,13 +27,11 @@ export default class spotifyLoginContainer extends React.Component {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + this.state.token
       }
-    }).then((response) => {
-        console.log('api response', response);
-    })
+    }).then(response => response.json())
+      .then(res => console.log(JSON.stringify(res)))
   }
 
   componentWillMount(){
-    console.log(this.state);
     spotifyStore.on('token_updated', () => {
       this.setState({token: spotifyStore.getToken()});
     })
