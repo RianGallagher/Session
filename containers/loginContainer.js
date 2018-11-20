@@ -13,7 +13,6 @@ export default class loginContainer extends React.Component {
     state = {
       email   : '',
       password: '',
-      token: '',
       loggedIn: false
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
@@ -55,7 +54,6 @@ export default class loginContainer extends React.Component {
     }
     const newToken = await token(result.params.code, redirectUrl);
     spotifyActions.setToken(newToken);
-    this.setState({token: newToken, loggedIn: true});
     this.props.navigation.navigate('SpotifyInitial');
   }
 
