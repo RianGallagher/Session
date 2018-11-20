@@ -22,7 +22,7 @@ export default class spotifyLoginContainer extends React.Component {
   }
 
   getSpotifySoundProfile(){
-    fetch('https://api.spotify.com/v1/me', {
+    fetch('https://api.spotify.com/v1/me/albums', {
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + this.state.token

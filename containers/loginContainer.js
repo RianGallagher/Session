@@ -36,7 +36,7 @@ export default class loginContainer extends React.Component {
 
   spotifyLogin = async() => {
     let redirectUrl = AuthSession.getRedirectUrl();
-    let scope = 'user-library-read user-top-read';
+    let scope = 'user-library-read';
     let state = this.generateRandomString(16);
 
     let result = await AuthSession.startAsync({
@@ -44,7 +44,7 @@ export default class loginContainer extends React.Component {
         'https://accounts.spotify.com/authorize?' +
         '&response_type=code' +
         '&client_id=' + client_id +
-        (scope ? '&scope' + encodeURIComponent(scope) : '') +
+        (scope ? '&scope=' + encodeURIComponent(scope) : '') +
         '&redirect_uri=' + encodeURIComponent(redirectUrl) +
         '&state=' + state
     });
