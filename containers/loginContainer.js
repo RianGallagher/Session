@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import loginView from '../components/LoginView';
 import token from '../token';
 import { AuthSession } from 'expo';
+import * as spotifyActions from '../actions/spotifyActions';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -53,7 +54,7 @@ export default class loginContainer extends React.Component {
       return;
     }
     const newToken = await token(result.params.code, redirectUrl);
-
+    spotifyActions.setToken(newToken);
     this.setState({token: newToken, loggedIn: true});
     this.props.navigation.navigate('SpotifyInitial');
   }

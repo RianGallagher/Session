@@ -19,7 +19,7 @@ class ExampleStore extends EventEmitter {
     switch(action.type) {
       case 'UPDATE': this.updateItems(action.data); break;
       default: {
-        console.log('Invalid action');
+        console.log('Invalid action example');
       }
     }
   }
