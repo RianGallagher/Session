@@ -21,12 +21,17 @@ export default class spotifyLoginContainer extends React.Component {
     })
     .then(response => response.json())
     .then(res => {
+      console.log(res);
       let items = [{ name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'}];
       res.items.forEach((artist) => {
         items.push({name: artist.name, code: '#f39c12'})
       })
-      //{ name: '', code: '#666', type: 'button'},
+      console.log(items);
+      items.push({ name: '', code: '#666', type: 'button'});
       this.setState({items: items});
+    })
+    .catch((err) => {
+      console.log('err', err);
     })
   }
 
