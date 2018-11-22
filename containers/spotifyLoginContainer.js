@@ -7,35 +7,17 @@ export default class spotifyLoginContainer extends React.Component {
     super(props);
     this.state = {
       token: spotifyStore.getToken(),
-<<<<<<< HEAD
       items: []
-=======
-      items: [
-        { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: '', code: '#666', type: 'button'},
-      ]
->>>>>>> master
     }
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   getSpotifySoundProfile(){
-<<<<<<< HEAD
     fetch('https://api.spotify.com/v1/me/top/artists?limit=10', {
-=======
-    fetch('https://api.spotify.com/v1/me/albums', {
->>>>>>> master
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + this.state.token
       }
-<<<<<<< HEAD
     })
     .then(response => response.json())
     .then(res => {
@@ -43,22 +25,16 @@ export default class spotifyLoginContainer extends React.Component {
       res.items.forEach((artist) => {
         items.push({name: artist.name, code: '#f39c12'})
       })
+      //{ name: '', code: '#666', type: 'button'},
       this.setState({items: items});
     })
-=======
-    }).then(response => response.json())
-      .then(res => console.log(JSON.stringify(res)))
->>>>>>> master
   }
 
   componentWillMount(){
     spotifyStore.on('token_updated', () => {
       this.setState({token: spotifyStore.getToken()});
     })
-<<<<<<< HEAD
     this.getSpotifySoundProfile();
-=======
->>>>>>> master
   }
 
   handleUpdate(){
@@ -71,15 +47,11 @@ export default class spotifyLoginContainer extends React.Component {
 
   render() {
     return (
-<<<<<<< HEAD
       <SpotifyLoginInitial
         items={this.state.items}
         navigation={this.props.navigation}
         handleUpdate={this.handleUpdate}
       />
-=======
-      <SpotifyLoginInitial items={this.state.items} navigation={this.props.navigation} handleUpdate={this.handleUpdate} />
->>>>>>> master
     );
   }
 }
