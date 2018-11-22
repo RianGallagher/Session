@@ -7,34 +7,33 @@ export default class spotifyLoginContainer extends React.Component {
     super(props);
     this.state = {
       token: spotifyStore.getToken(),
-      items: [
-        { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: 'Genre', code: '#3498db' }, { name: 'Band', code: '#f39c12' },
-        { name: 'Song', code: '#bdc3c7' },   { name: 'Genre', code: '#3498db' },
-        { name: '', code: '#666', type: 'button'},
-      ]
+      items: []
     }
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
   getSpotifySoundProfile(){
-    fetch('https://api.spotify.com/v1/me/albums', {
+    fetch('https://api.spotify.com/v1/me/top/artists?limit=10', {
       headers: {
         'Content-type': 'application/json',
         'Authorization': 'Bearer ' + this.state.token
       }
-    }).then(response => response.json())
-      .then(res => console.log(JSON.stringify(res)))
+    })
+    .then(response => response.json())
+    .then(res => {
+      let items = [{ name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'}];
+      res.items.forEach((artist) => {
+        items.push({name: artist.name, code: '#f39c12'})
+      })
+      this.setState({items: items});
+    })
   }
 
   componentWillMount(){
     spotifyStore.on('token_updated', () => {
       this.setState({token: spotifyStore.getToken()});
     })
+    this.getSpotifySoundProfile();
   }
 
   handleUpdate(){
@@ -47,7 +46,11 @@ export default class spotifyLoginContainer extends React.Component {
 
   render() {
     return (
-      <SpotifyLoginInitial items={this.state.items} navigation={this.props.navigation} handleUpdate={this.handleUpdate} />
+      <SpotifyLoginInitial
+        items={this.state.items}
+        navigation={this.props.navigation}
+        handleUpdate={this.handleUpdate}
+      />
     );
   }
 }
