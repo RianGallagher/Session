@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import loginView from '../components/LoginView';
 import token from '../token';
 import { AuthSession } from 'expo';
+import * as spotifyActions from '../actions/spotifyActions';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -12,7 +13,6 @@ export default class loginContainer extends React.Component {
     state = {
       email   : '',
       password: '',
-      token: '',
       loggedIn: false
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
@@ -35,7 +35,7 @@ export default class loginContainer extends React.Component {
 
   spotifyLogin = async() => {
     let redirectUrl = AuthSession.getRedirectUrl();
-    let scope = 'user-library-read user-top-read';
+    let scope = 'user-library-read';
     let state = this.generateRandomString(16);
 
     let result = await AuthSession.startAsync({
@@ -43,7 +43,7 @@ export default class loginContainer extends React.Component {
         'https://accounts.spotify.com/authorize?' +
         '&response_type=code' +
         '&client_id=' + client_id +
-        (scope ? '&scope' + encodeURIComponent(scope) : '') +
+        (scope ? '&scope=' + encodeURIComponent(scope) : '') +
         '&redirect_uri=' + encodeURIComponent(redirectUrl) +
         '&state=' + state
     });
@@ -53,8 +53,7 @@ export default class loginContainer extends React.Component {
       return;
     }
     const newToken = await token(result.params.code, redirectUrl);
-
-    this.setState({token: newToken, loggedIn: true});
+    spotifyActions.setToken(newToken);
     this.props.navigation.navigate('SpotifyInitial');
   }
 
