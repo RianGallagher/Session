@@ -26,9 +26,8 @@ export default class spotifyLoginContainer extends React.Component {
         { name: '', code: '#666', type: 'info'}
       ];
       res.items.forEach((artist) => {
-        items.push({name: artist.name, code: '#f39c12'});
-        console.log('genres', artist.genres);
         items.push({name: artist.genres[0], code: '#3498db'});
+        items.push({name: artist.name, code: '#f39c12'});
       })
       items.push({ name: '', code: '#666', type: 'button'});
       this.setState({items: items});
