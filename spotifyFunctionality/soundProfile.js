@@ -1,4 +1,4 @@
-import spotifyStore from '../../stores/spotifyStore';
+import spotifyStore from '../stores/spotifyStore';
 import whitelist from './genreWhitelist';
 
 export function getTop(token){
@@ -17,7 +17,7 @@ export function getTop(token){
       // if not use first one in array
       let genreItem = whitelist.inWhiteList(artist.genres) || artist.genres[0];
       const capatilisedGenre = genreItem.charAt(0).toUpperCase() + genreItem.slice(1);
-      
+
       // Avoid duplication of genres on screen
       if(!genres.includes(capatilisedGenre))
         genres.push(capatilisedGenre);

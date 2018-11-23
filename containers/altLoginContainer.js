@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import AltLogin from '../components/AltLogin';
+import spotifyStore from '../stores/spotifyStore';
 
 export default class altLoginContainer extends React.Component {
     constructor(props){
