@@ -31,12 +31,13 @@ export default class spotifyLoginContainer extends React.Component {
         let genreItem = whitelist.inWhiteList(artist.genres) || artist.genres[0];
 
         if(!genres.includes(genreItem)){
-          items.push({name: genreItem, code: '#3498db'});
+          items.push({name: genreItem.charAt(0).toUpperCase() + genreItem.slice(1), code: '#3498db'});
           genres.push(genreItem)
         }
         items.push({name: artist.name, code: '#f39c12'});
       })
       items.push({ name: '', code: '#666', type: 'button'});
+
       this.setState({items: items});
     })
     .catch((err) => {
