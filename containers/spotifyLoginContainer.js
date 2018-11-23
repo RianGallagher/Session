@@ -25,7 +25,7 @@ export default class spotifyLoginContainer extends React.Component {
   }
 
   async getSpotifySoundProfile(){
-    const topItems = await soundProfile.getTop(this.state.token);
+    const topItems = await soundProfile.getUsersTop(this.state.token);
     let items = [];
 
     topItems.artists.forEach((artist) => {

@@ -14,7 +14,7 @@ export default class altLoginContainer extends React.Component {
     }
 
     getTopGenres = async() => {
-      const genres = await soundProfile.getTopGenres(spotifyStore.getToken());
+      const genres = await soundProfile.getGeneralTopGenres(spotifyStore.getToken());
       let items = [];
 
       genres.forEach( genre => {
@@ -27,7 +27,7 @@ export default class altLoginContainer extends React.Component {
       this.setState({items: items});
     }
 
-    async componentWillMount(){
+    componentWillMount(){
       this.getTopGenres();
     }
 

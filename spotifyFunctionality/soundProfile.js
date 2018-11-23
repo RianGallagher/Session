@@ -1,7 +1,7 @@
 import spotifyStore from '../stores/spotifyStore';
 import whitelist from './genreWhitelist';
 
-export function getTop(token){
+export function getUsersTop(token){
   let genres = [];
   let artists = [];
   return fetch('https://api.spotify.com/v1/me/top/artists?limit=10', {
@@ -31,7 +31,7 @@ export function getTop(token){
   })
 }
 
-export function getTopGenres(token){
+export function getGeneralTopGenres(token){
   return fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
     headers: {
       'Content-type': 'application/json',
