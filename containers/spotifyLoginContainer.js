@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import SpotifyLoginInitial from '../components/SpotifyLoginInitial';
 import spotifyStore from '../stores/spotifyStore';
-// import whitelist from '../genreWhitelist';
 import * as soundProfile from './spotifyFunctionality/soundProfile';
 
 export default class spotifyLoginContainer extends React.Component {
