@@ -30,3 +30,15 @@ export function getTop(token){
     console.log('error in spotify API request', err);
   })
 }
+
+export function getTopGenres(token){
+  return fetch('https://api.spotify.com/v1/recommendations/available-genre-seeds', {
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(response => response.json())
+  .then(res => { return res.genres })
+  .catch(err => console.log('err', err));
+}

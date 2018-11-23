@@ -41,7 +41,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    //alignItems: 'center',
     borderRadius: 5,
     padding: 10,
     height: 150,
