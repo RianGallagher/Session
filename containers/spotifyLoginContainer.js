@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyLoginInitial from '../components/SpotifyLoginInitial';
 import spotifyStore from '../stores/spotifyStore';
+import whitelist from '../genreWhitelist';
 
 export default class spotifyLoginContainer extends React.Component {
   constructor(props){
@@ -25,11 +26,18 @@ export default class spotifyLoginContainer extends React.Component {
         { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
         { name: '', code: '#666', type: 'info'}
       ];
+      let genres = [];
       res.items.forEach((artist) => {
-        items.push({name: artist.genres[0], code: '#3498db'});
+        let genreItem = whitelist.inWhiteList(artist.genres) || artist.genres[0];
+
+        if(!genres.includes(genreItem)){
+          items.push({name: genreItem.charAt(0).toUpperCase() + genreItem.slice(1), code: '#3498db'});
+          genres.push(genreItem)
+        }
         items.push({name: artist.name, code: '#f39c12'});
       })
       items.push({ name: '', code: '#666', type: 'button'});
+
       this.setState({items: items});
     })
     .catch((err) => {
