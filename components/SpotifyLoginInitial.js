@@ -20,7 +20,7 @@ export default SpotifyLoginInitial = (props) => {
         <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
         {item.type!=='info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
         {item.type=='button' ?
-        <TouchableHighlight onPress={() => props.handleUpdate()}>
+        <TouchableHighlight onPress={() => props.navigation.navigate('UserAssertion')}>
           <Text style={styles.gridButton}>Continue</Text>
         </TouchableHighlight> : null }
         </View>
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
+    // alignItems: 'center',
     borderRadius: 5,
     padding: 10,
     height: 150,
