@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyLoginInitial from '../components/SpotifyLoginInitial';
 import spotifyStore from '../stores/spotifyStore';
+import * as soundProfile from '../spotifyFunctionality/soundProfile';
 
 export default class spotifyLoginContainer extends React.Component {
   constructor(props){
@@ -12,29 +13,36 @@ export default class spotifyLoginContainer extends React.Component {
     this.handleUpdate = this.handleUpdate.bind(this);
   }
 
-  getSpotifySoundProfile(){
-    fetch('https://api.spotify.com/v1/me/top/artists?limit=10', {
-      headers: {
-        'Content-type': 'application/json',
-        'Authorization': 'Bearer ' + this.state.token
-      }
+  shuffle(array) {
+    let randomIndex, temp;
+    for (let i = array.length - 1; i > 0; i--) {
+      randomIndex = Math.floor(Math.random() * (i + 1));
+      temp = array[i];
+      array[i] = array[randomIndex];
+      array[randomIndex] = temp;
+    }
+    return array;
+  }
+
+  async getSpotifySoundProfile(){
+    const topItems = await soundProfile.getUsersTop(this.state.token);
+    let items = [];
+
+    topItems.artists.forEach((artist) => {
+      items.push({name: artist, code: '#f39c12'})
+    });
+    topItems.genres.forEach((genre)=> {
+      items.push({name: genre, 'code': '#3498db'})
     })
-    .then(response => response.json())
-    .then(res => {
-      let items = [
-        { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
-        { name: '', code: '#666', type: 'info'}
-      ];
-      res.items.forEach((artist) => {
-        items.push({name: artist.genres[0], code: '#3498db'});
-        items.push({name: artist.name, code: '#f39c12'});
-      })
-      items.push({ name: '', code: '#666', type: 'button'});
-      this.setState({items: items});
-    })
-    .catch((err) => {
-      console.log('err', err);
-    })
+
+    items = this.shuffle(items);
+    items.unshift(
+      { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
+      { name: '', code: '#666', type: 'info'}
+    );
+    items.push({ name: '', code: '#666', type: 'button'});
+
+    this.setState({items: items});
   }
 
   componentWillMount(){

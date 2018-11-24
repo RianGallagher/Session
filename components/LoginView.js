@@ -54,7 +54,7 @@ export default LoginView = (props) => {
         <Text style={styles.spotifyText}>Spotify</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => props.navigation.navigate('AltLogin')}>
+      <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => props.basicLogin()}>
         <Text style={styles.googleText}>Google</Text>
       </TouchableHighlight>
 

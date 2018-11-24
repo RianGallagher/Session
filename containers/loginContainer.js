@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import loginView from '../components/LoginView';
-import token from '../token';
+import token, { basicToken } from '../spotifyFunctionality/token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
 import axios from 'axios';
@@ -18,6 +18,7 @@ export default class loginContainer extends React.Component {
       loggedIn: false
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
+    this.basicLogin = this.basicLogin.bind(this);
     this.generateRandomString = this.generateRandomString.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -88,10 +89,16 @@ export default class loginContainer extends React.Component {
     this.props.navigation.navigate('SpotifyInitial');
   }
 
+  basicLogin = async() => {
+    spotifyActions.setToken(await basicToken());
+    this.props.navigation.navigate('AltLogin');
+  }
+
   render() {
       return (
         <LoginView
           spotifyLogin={this.spotifyLogin}
+          basicLogin={this.basicLogin}
           registerUser={this.registerUser}
           handleEmailChange={this.handleEmailChange}
           handlePasswordChange={this.handlePasswordChange}
