@@ -21,3 +21,17 @@ export default async (code, redirectUrl) => {
   console.log('token is', token);
   return token;
 }
+
+export async function basicToken (){
+  const res = await fetch(apiPrefix, {
+    method: 'POST',
+    headers: {
+      Authorization: 'Basic ' + credentials,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    body: 'grant_type=client_credentials&'
+  });
+  const json = await res.json();
+  token = json.access_token;
+  return token;
+}

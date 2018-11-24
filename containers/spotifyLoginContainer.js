@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import SpotifyLoginInitial from '../components/SpotifyLoginInitial';
 import spotifyStore from '../stores/spotifyStore';
-import * as soundProfile from './spotifyFunctionality/soundProfile';
+import * as soundProfile from '../spotifyFunctionality/soundProfile';
 
 export default class spotifyLoginContainer extends React.Component {
   constructor(props){
@@ -25,7 +25,7 @@ export default class spotifyLoginContainer extends React.Component {
   }
 
   async getSpotifySoundProfile(){
-    const topItems = await soundProfile.getTop(this.state.token);
+    const topItems = await soundProfile.getUsersTop(this.state.token);
     let items = [];
 
     topItems.artists.forEach((artist) => {
