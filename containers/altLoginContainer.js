@@ -36,7 +36,7 @@ export default class altLoginContainer extends React.Component {
       const recommendations = await soundProfile.getRecommendations(genre);
       // Max recommendations 3
       const maxRecommendations = recommendations.length < 3 ? recommendations.length : 3;
-      for(let i = 0; i < (recommendations.length < 3 ? recommendations.length : 3); i++)
+      for(let i = 0; i < maxRecommendations; i++)
         console.log(recommendations[i].artists[0].name);
     }
 
