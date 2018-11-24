@@ -3,6 +3,7 @@ import loginView from '../components/LoginView';
 import token from '../token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
+import axios from 'axios';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -13,14 +14,44 @@ export default class loginContainer extends React.Component {
     state = {
       email   : '',
       password: '',
+      username: '',
       loggedIn: false
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.generateRandomString = this.generateRandomString.bind(this);
+    this.handleEmailChange = this.handleEmailChange.bind(this);
+    this.handlePasswordChange = this.handlePasswordChange.bind(this);
+    this.handleUsernameChange = this.handleUsernameChange.bind(this);
+    this.registerUser = this.registerUser.bind(this);
   }
 
-  onClickListener = (viewId) => {
-    Alert.alert("Alert", "Button pressed " + viewId);
+  handleEmailChange = (emailText) => {
+    console.log(emailText);
+    this.setState({email: emailText})
+  }
+
+  handlePasswordChange = (passwordText) => {
+    console.log(passwordText);
+    this.setState({password: passwordText})
+  }
+
+  handleUsernameChange = (usernameText) => {
+    console.log(usernameText);
+    this.setState({username: usernameText})
+  }
+
+  registerUser = async() => {
+    axios.post('http://192.168.0.73:2018/users', {
+        email: this.state.email,
+        password: this.state.password,
+        username: this.state.username
+    })
+    .then((res) => {
+      console.log(res)
+    })
+    .catch((error) => {
+      console.log(error);
+    });
   }
 
   generateRandomString = (length) => {
@@ -59,7 +90,13 @@ export default class loginContainer extends React.Component {
 
   render() {
       return (
-        <LoginView spotifyLogin={this.spotifyLogin} navigation={this.props.navigation}/>
+        <LoginView
+          spotifyLogin={this.spotifyLogin}
+          registerUser={this.registerUser}
+          handleEmailChange={this.handleEmailChange}
+          handlePasswordChange={this.handlePasswordChange}
+          handleUsernameChange={this.handleUsernameChange}
+          navigation={this.props.navigation}/>
       );
   }
 }

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@pusher/chatkit": "^0.7.18",
+    "axios": "^0.18.0",
     "base-64": "^0.1.0",
     "cli": "^1.0.1",
     "events": "^3.0.0",
