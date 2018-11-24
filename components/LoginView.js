@@ -17,22 +17,33 @@ export default LoginView = (props) => {
     <View style={styles.container}>
     <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
       <Text style={styles.headerText}>Welcome</Text>
+        <View style={styles.inputContainer}>
+          <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/ultraviolet/50/000000/gender-neutral-user.png'}}/>
+          <TextInput style={styles.inputs} name='username' value={props.username} type ='input'
+              placeholder="Username"
+              underlineColorAndroid='transparent'
+              onChangeText={props.handleUsernameChange}
+          />
+        </View>
+
       <View style={styles.inputContainer}>
         <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/message/ultraviolet/50/3498db'}}/>
-        <TextInput style={styles.inputs}
+        <TextInput style={styles.inputs} name='email' value={props.email} type ='input'
             placeholder="Email"
             keyboardType="email-address"
             underlineColorAndroid='transparent'
-            onChangeText={(email) => this.setState({email})}/>
+            onChangeText={props.handleEmailChange}
+        />
       </View>
 
       <View style={styles.inputContainer}>
         <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/key-2/ultraviolet/50/3498db'}}/>
-        <TextInput style={styles.inputs}
+        <TextInput style={styles.inputs} name='password' value={props.password} type ='input'
             placeholder="Password"
             secureTextEntry={true}
             underlineColorAndroid='transparent'
-            onChangeText={(password) => this.setState({password})}/>
+            onChangeText={props.handlePasswordChange}
+        />
       </View>
 
       <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.navigation.navigate('ProfileScreen')}>
@@ -51,7 +62,7 @@ export default LoginView = (props) => {
           <Text style={styles.sundryText}>Forgot your password?</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('register')}>
+      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.registerUser().then(()=>{props.navigation.navigate('AltLogin')})}>
           <Text style={styles.sundryText}>Register</Text>
       </TouchableHighlight>
       </ImageBackground>
