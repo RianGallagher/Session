@@ -42,3 +42,15 @@ export function getGeneralTopGenres(token){
   .then(res => { return res.genres })
   .catch(err => console.log('err', err));
 }
+
+export function getRecommendations(genre){
+  return fetch('https://api.spotify.com/v1/recommendations?seed_genres=' + encodeURIComponent(genre), {
+    headers: {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + token
+    }
+  })
+  .then(response => response.json())
+  .then(res => { return res.tracks })
+  .catch(err => console.log('err', err));
+}

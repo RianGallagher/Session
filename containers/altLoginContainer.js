@@ -11,6 +11,7 @@ export default class altLoginContainer extends React.Component {
         items: []
       }
       this.addBandJson = this.addBandJson.bind(this);
+      this.getRecommendations = this.getRecommendations.bind(this);
     }
 
     getTopGenres = async() => {
@@ -31,6 +32,14 @@ export default class altLoginContainer extends React.Component {
       this.getTopGenres();
     }
 
+    async getRecommendations(genre){
+      const recommendations = await soundProfile.getRecommendations(genre);
+      // Max recommendations 3
+      const maxRecommendations = recommendations.length < 3 ? recommendations.length : 3;
+      for(let i = 0; i < (recommendations.length < 3 ? recommendations.length : 3); i++)
+        console.log(recommendations[i].artists[0].name);
+    }
+
     onClickListener = (viewId) => {
       Alert.alert("Alert", "Button pressed " + viewId);
     }
@@ -41,7 +50,11 @@ export default class altLoginContainer extends React.Component {
 
     render() {
       return (
-          <AltLogin items={this.state.items} navigation={this.props.navigation} />
+          <AltLogin
+            items={this.state.items}
+            getRecommendations={this.getRecommendations}
+            navigation={this.props.navigation}
+          />
       )
     }
 }

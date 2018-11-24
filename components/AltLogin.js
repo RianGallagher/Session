@@ -18,15 +18,20 @@ export default AltLogin = (props) => {
         style={styles.gridView}
         renderItem={item => (
           <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-          {item.type !== 'info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
-          {item.type == 'button' ?
-          <TouchableHighlight onPress={() => props.navigation.navigate('ProfileScreen')}>
-            <Text style={styles.gridButton}>Continue</Text>
-          </TouchableHighlight> : null }
-          {item.type == 'genreExpand' ?
-          <TouchableHighlight onPress = {() => addBandJson()}>
-            <Text></Text>
-          </TouchableHighlight> : null }
+            {item.type !== 'info' ?
+              <Text onPress={() => props.getRecommendations(item.name)} style={styles.itemName}>{item.name}</Text> :
+              <Text style={styles.gridPrompts}>{item.name}</Text>
+            }
+            {item.type == 'button' ?
+              <TouchableHighlight onPress={() => props.navigation.navigate('ProfileScreen')}>
+                <Text style={styles.gridButton}>Continue</Text>
+              </TouchableHighlight> : null
+            }
+            {item.type == 'genreExpand' ?
+              <TouchableHighlight onPress = {() => props.getRecommendations()}>
+                <Text></Text>
+              </TouchableHighlight> : null
+            }
           </View>
         )}
       />
