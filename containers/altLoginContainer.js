@@ -33,7 +33,7 @@ export default class altLoginContainer extends React.Component {
     }
 
     async getRecommendations(genre){
-      var index;
+      let index;
       const recommendations = await soundProfile.getRecommendations(genre);
 
       tempItems = this.state.items;
