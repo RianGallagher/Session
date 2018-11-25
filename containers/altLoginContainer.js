@@ -19,7 +19,7 @@ export default class altLoginContainer extends React.Component {
       let items = [];
 
       genres.forEach( genre => {
-        items.push({name: genre, code: '#3498db'})
+        items.push({name: genre, code: '#3498db', type: 'genreExpand'})
       })
 
       items.unshift({ name: 'Tell us what you love...', code: '#666', type: 'info'})
@@ -33,11 +33,21 @@ export default class altLoginContainer extends React.Component {
     }
 
     async getRecommendations(genre){
+      var index;
       const recommendations = await soundProfile.getRecommendations(genre);
-      // Max recommendations 3
+
+      tempItems = this.state.items;
+      tempItems.find(function(item, i){
+        if(item.name === genre){
+          index = i;
+        }
+      });
+
       const maxRecommendations = recommendations.length < 3 ? recommendations.length : 3;
       for(let i = 0; i < maxRecommendations; i++)
-        console.log(recommendations[i].artists[0].name);
+        tempItems.splice(index+1, 0, {name: recommendations[i].artists[0].name, code: '#f39c12', type: 'selectBand'});
+        tempItems.join();
+        this.setState({items: tempItems});
     }
 
     onClickListener = (viewId) => {
