@@ -40,6 +40,7 @@ export default class altLoginContainer extends React.Component {
       tempItems.find(function(item, i){
         if(item.name === genre){
           index = i;
+          item.code = '#000080'
         }
       });
 
@@ -50,11 +51,27 @@ export default class altLoginContainer extends React.Component {
         this.setState({items: tempItems});
     }
 
-    async selectFavBands(band, genre){
+    async selectFavBands(band, genre, code){
       let favBands = this.state.favBands;
-      favBands.push({name: band, genre: genre});
-      this.setState({favBands: favBands});
-      console.log(favBands);
+      let tempItems = this.state.items;
+      let exists = false;
+      favBands.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          exists = true;
+        }
+      });
+      tempItems.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          item.code = '#A65200';
+        }
+      });
+      if(exists === false){
+        favBands.push({name: band, genre: genre, code:'#A65200'});
+        this.setState({favBands: favBands});
+        console.log(favBands);
+      }
     }
 
 

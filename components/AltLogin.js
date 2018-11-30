@@ -19,7 +19,7 @@ export default AltLogin = (props) => {
         renderItem={item => (
           <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
             {item.type !== 'info' ?
-              <Text onPress={() => props.getRecommendations(item.name)} style={styles.itemName}>{item.name}</Text> :
+              <Text onPress={() => props.getRecommendations(item.name, item.code)} style={styles.itemName}>{item.name}</Text> :
               <Text style={styles.gridPrompts}>{item.name}</Text>
             }
             {item.type == 'button' ?
@@ -27,13 +27,8 @@ export default AltLogin = (props) => {
                 <Text style={styles.gridButton}>Continue</Text>
               </TouchableHighlight> : null
             }
-            {item.type == 'genreExpand' ?
-              <TouchableHighlight onPress = {() => props.getRecommendations()}>
-                <Text></Text>
-              </TouchableHighlight> : null
-            }
             {item.type == 'selectBand' ?
-              <TouchableHighlight onPress = {() => props.selectFavBands(item.name, item.genre)} >
+              <TouchableHighlight onPress = {() => props.selectFavBands(item.name, item.genre, item.code)} >
                 <Text>Tap to Select</Text>
               </TouchableHighlight> : null
             }
