@@ -7,11 +7,11 @@ export default class altLoginContainer extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        showBands: { name: 'Band', code: '#f39c12' },
-        items: []
+        items: [],
+        favBands: []
       }
-      this.addBandJson = this.addBandJson.bind(this);
       this.getRecommendations = this.getRecommendations.bind(this);
+      this.selectFavBands = this.selectFavBands.bind(this);
     }
 
     getTopGenres = async() => {
@@ -40,22 +40,44 @@ export default class altLoginContainer extends React.Component {
       tempItems.find(function(item, i){
         if(item.name === genre){
           index = i;
+          item.code = '#000080'
         }
       });
 
       const maxRecommendations = recommendations.length < 3 ? recommendations.length : 3;
       for(let i = 0; i < maxRecommendations; i++)
-        tempItems.splice(index+1, 0, {name: recommendations[i].artists[0].name, code: '#f39c12', type: 'selectBand'});
+        tempItems.splice(index+1, 0, {name: recommendations[i].artists[0].name, code: '#f39c12', genre: genre, type: 'selectBand'});
         tempItems.join();
         this.setState({items: tempItems});
     }
 
-    onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed " + viewId);
+    async selectFavBands(band, genre, code){
+      let favBands = this.state.favBands;
+      let tempItems = this.state.items;
+      let exists = false;
+      favBands.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          exists = true;
+        }
+      });
+      tempItems.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          item.code = '#A65200';
+        }
+      });
+      if(exists === false){
+        favBands.push({name: band, genre: genre, code:'#A65200'});
+        this.setState({favBands: favBands});
+        console.log(favBands);
+      }
     }
 
-    addBandJson = () => {
-      items.push(showBands);
+
+
+    onClickListener = (viewId) => {
+      Alert.alert("Alert", "Button pressed " + viewId);
     }
 
     render() {
@@ -63,6 +85,7 @@ export default class altLoginContainer extends React.Component {
           <AltLogin
             items={this.state.items}
             getRecommendations={this.getRecommendations}
+            selectFavBands={this.selectFavBands}
             navigation={this.props.navigation}
           />
       )
