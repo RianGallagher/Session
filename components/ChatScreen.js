@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 export default ChatScreen = (props) => {
+  console.log(props);
   return(
     <View style={styles.container}>
       <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
