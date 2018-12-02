@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Chat from '../components/ChatScreen';
+import ChatScreen from '../components/ChatScreen';
 import SendBird from 'sendbird';
 
 
