@@ -45,10 +45,10 @@ export default ProfileScreen = (props) => {
 
   const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: '#FF8300',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      backgroundColor: '#FF8300',
     },
     inputIcon:{
       width:30,
@@ -74,15 +74,15 @@ export default ProfileScreen = (props) => {
       alignItems:'center'
     },
     imgBackground: {
-        width: '100%',
-        height: '100%',
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+      width: '100%',
+      height: '100%',
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
     },
     headerText: {
-        color: "#c0c0c0",
-        fontSize: 44,
-        marginBottom: 50
+      color: "#c0c0c0",
+      fontSize: 44,
+      marginBottom: 50
     },
 });

@@ -4,6 +4,7 @@ import token, { basicToken } from '../spotifyFunctionality/token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
 import axios from 'axios';
+import SendBird from 'sendbird';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -42,6 +43,10 @@ export default class loginContainer extends React.Component {
   }
 
   registerUser = async() => {
+    const sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
+    const USER_ID = this.state.username
+    sb.connect(USER_ID, function(user, error) {});
+
     axios.post('http://192.168.0.73:2018/users', {
         email: this.state.email,
         password: this.state.password,
