@@ -18,7 +18,7 @@ export default class chatScreenContainer extends React.Component {
         if (error) {
             return;
         }
-
+        console.log('infunct')
         console.log(channels);
     });
   }
