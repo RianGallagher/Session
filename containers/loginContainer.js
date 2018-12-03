@@ -4,6 +4,7 @@ import token, { basicToken } from '../spotifyFunctionality/token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
 import axios from 'axios';
+import SendBird from 'sendbird';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -11,11 +12,11 @@ const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 export default class loginContainer extends React.Component {
   constructor(props) {
     super(props);
-    state = {
+    this.state = {
       email   : '',
       password: '',
       username: '',
-      loggedIn: false
+      loggedIn: false,
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.basicLogin = this.basicLogin.bind(this);
@@ -24,6 +25,7 @@ export default class loginContainer extends React.Component {
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.registerUser = this.registerUser.bind(this);
+    this.sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
   }
 
   handleEmailChange = (emailText) => {
@@ -42,6 +44,9 @@ export default class loginContainer extends React.Component {
   }
 
   registerUser = async() => {
+    const USER_ID = this.state.username
+    this.sb.connect(USER_ID, function(user, error) {});
+
     axios.post('http://192.168.0.73:2018/users', {
         email: this.state.email,
         password: this.state.password,
@@ -86,7 +91,15 @@ export default class loginContainer extends React.Component {
     }
     const newToken = await token(result.params.code, redirectUrl);
     spotifyActions.setToken(newToken);
-    this.props.navigation.navigate('SpotifyInitial');
+    this.props.navigation.navigate('SpotifyInitial')
+    const userName = fetch('https://api.spotify.com/v1/me', {
+      headers: {
+      'Content-type': 'application/json',
+      'Authorization': 'Bearer ' + newToken
+      }
+    })
+    .then(response => response.json())
+    .then(res => {this.sb.connect(res.display_name, function(user, error) {});})
   }
 
   basicLogin = async() => {

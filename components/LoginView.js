@@ -62,7 +62,7 @@ export default LoginView = (props) => {
           <Text style={styles.sundryText}>Forgot your password?</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.registerUser().then(()=>{props.navigation.navigate('AltLogin')})}>
+      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.registerUser().then(()=>{props.basicLogin()})}>
           <Text style={styles.sundryText}>Register</Text>
       </TouchableHighlight>
       </ImageBackground>

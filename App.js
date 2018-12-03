@@ -7,7 +7,7 @@ import userAssertionContainer from './containers/userAssertionContainer';
 import profileScreenContainer from './containers/profileScreenContainer';
 import eventsContainer from './containers/eventsContainer';
 import suggestedListContainer from './containers/suggestedListContainer';
-import ChatScreen from './components/ChatScreen';
+import chatScreenContainer from './containers/chatScreenContainer';
 
 const RootStack = createStackNavigator(
   {
@@ -42,7 +42,7 @@ const RootStack = createStackNavigator(
       }
     },
     ChatScreen: {
-      screen: ChatScreen,
+      screen: chatScreenContainer,
       navigationOptions: {
         header: null,
       }
