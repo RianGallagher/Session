@@ -1,10 +1,10 @@
 import spotifyStore from '../stores/spotifyStore';
 import whitelist from './genreWhitelist';
 
-export function getUsersTop(token){
+export function getUsersTop(token, offset){
   let genres = [];
   let artists = [];
-  return fetch('https://api.spotify.com/v1/me/top/artists?limit=10', {
+  return fetch('https://api.spotify.com/v1/me/top/artists?limit=10&offset=' + offset, {
     headers: {
       'Content-type': 'application/json',
       'Authorization': 'Bearer ' + token

@@ -7,11 +7,11 @@ export default class altLoginContainer extends React.Component {
     constructor(props){
       super(props);
       this.state = {
-        showBands: { name: 'Band', code: '#f39c12' },
-        items: []
+        items: [],
+        favBands: []
       }
-      this.addBandJson = this.addBandJson.bind(this);
       this.getRecommendations = this.getRecommendations.bind(this);
+      this.selectFavBands = this.selectFavBands.bind(this);
     }
 
     getTopGenres = async() => {
@@ -19,7 +19,7 @@ export default class altLoginContainer extends React.Component {
       let items = [];
 
       genres.forEach( genre => {
-        items.push({name: genre, code: '#3498db'})
+        items.push({name: genre, code: '#3498db', type: 'genreExpand'})
       })
 
       items.unshift({ name: 'Tell us what you love...', code: '#666', type: 'info'})
@@ -33,19 +33,51 @@ export default class altLoginContainer extends React.Component {
     }
 
     async getRecommendations(genre){
+      let index;
       const recommendations = await soundProfile.getRecommendations(genre);
-      // Max recommendations 3
+
+      tempItems = this.state.items;
+      tempItems.find(function(item, i){
+        if(item.name === genre){
+          index = i;
+          item.code = '#000080'
+        }
+      });
+
       const maxRecommendations = recommendations.length < 3 ? recommendations.length : 3;
       for(let i = 0; i < maxRecommendations; i++)
-        console.log(recommendations[i].artists[0].name);
+        tempItems.splice(index+1, 0, {name: recommendations[i].artists[0].name, code: '#f39c12', genre: genre, type: 'selectBand'});
+        tempItems.join();
+        this.setState({items: tempItems});
     }
+
+    async selectFavBands(band, genre, code){
+      let favBands = this.state.favBands;
+      let tempItems = this.state.items;
+      let exists = false;
+      favBands.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          exists = true;
+        }
+      });
+      tempItems.find(function(item, i){
+        if(item.name === band){
+          index = i;
+          item.code = '#A65200';
+        }
+      });
+      if(exists === false){
+        favBands.push({name: band, genre: genre, code:'#A65200'});
+        this.setState({favBands: favBands});
+        console.log(favBands);
+      }
+    }
+
+
 
     onClickListener = (viewId) => {
       Alert.alert("Alert", "Button pressed " + viewId);
-    }
-
-    addBandJson = () => {
-      items.push(showBands);
     }
 
     render() {
@@ -53,6 +85,7 @@ export default class altLoginContainer extends React.Component {
           <AltLogin
             items={this.state.items}
             getRecommendations={this.getRecommendations}
+            selectFavBands={this.selectFavBands}
             navigation={this.props.navigation}
           />
       )

@@ -8,7 +8,8 @@ export default class spotifyLoginContainer extends React.Component {
     super(props);
     this.state = {
       token: spotifyStore.getToken(),
-      items: []
+      items: [],
+      itemsOffset: 0
     }
     this.handleUpdate = this.handleUpdate.bind(this);
   }
@@ -25,24 +26,30 @@ export default class spotifyLoginContainer extends React.Component {
   }
 
   async getSpotifySoundProfile(){
-    const topItems = await soundProfile.getUsersTop(this.state.token);
-    let items = [];
+    // get users top listened to artists and genres
+    // offset is how many more itmes to retrieve, it gets the next 10 each time
+    const topItems = await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset);
+    let nextItems = [];
 
     topItems.artists.forEach((artist) => {
-      items.push({name: artist, code: '#f39c12'})
+      nextItems.push({name: artist, code: '#f39c12', type: 'musicTile'})
     });
     topItems.genres.forEach((genre)=> {
-      items.push({name: genre, 'code': '#3498db'})
+      nextItems.push({name: genre, 'code': '#3498db', type: 'musicTile'})
     })
 
-    items = this.shuffle(items);
-    items.unshift(
-      { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
-      { name: '', code: '#666', type: 'info'}
-    );
-    items.push({ name: '', code: '#666', type: 'button'});
+    nextItems = this.shuffle(nextItems);
+    if (this.state.itemsOffset === 0) {
+      nextItems.unshift(
+        { name: 'Based on your Spotify history, you seem to love...', code: '#666', type: 'info'},
+        { name: '', code: '#666', type: 'info'}
+      );
+    }
+    nextItems.push({ name: 'continue', code: '#666', type: 'button'}, { name: 'more', code: '#666', type: 'button'});
 
-    this.setState({items: items});
+    // remove continue and more button (this last two elements) from original list
+    const previousItems = this.state.items.slice(0, this.state.items.length-2);
+    this.setState({items: previousItems.concat(nextItems)});
   }
 
   componentWillMount(){
@@ -53,7 +60,7 @@ export default class spotifyLoginContainer extends React.Component {
   }
 
   handleUpdate(){
-    this.getSpotifySoundProfile();
+    this.setState({ itemsOffset: this.state.itemsOffset + 10}, this.getSpotifySoundProfile);
   }
 
   onClickListener = (viewId) => {

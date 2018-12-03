@@ -18,11 +18,20 @@ export default SpotifyLoginInitial = (props) => {
       style={styles.gridView}
       renderItem={item => (
         <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
-        {item.type!=='info' ? <Text style={styles.itemName}>{item.name}</Text> : <Text style={styles.gridPrompts}>{item.name}</Text>}
-        {item.type=='button' ?
-        <TouchableHighlight onPress={() => props.navigation.navigate('UserAssertion')}>
-          <Text style={styles.gridButton}>Continue</Text>
-        </TouchableHighlight> : null }
+          { item.type==='musicTile' ? <Text style={styles.itemName}>{item.name}</Text> : null }
+          { item.type==='info' ? <Text style={styles.gridPrompts}>{item.name}</Text> : null }
+          { item.name==='more' ?
+            <TouchableHighlight onPress={() => props.handleUpdate()}>
+              <Text style={styles.gridButton}>More</Text>
+            </TouchableHighlight>
+            : null
+          }
+          { item.name=='continue' ?
+            <TouchableHighlight onPress={() => props.navigation.navigate('UserAssertion')}>
+              <Text style={styles.gridButton}>Continue</Text>
+            </TouchableHighlight>
+            : null
+          }
         </View>
       )}
     />
