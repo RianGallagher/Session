@@ -4,8 +4,8 @@ import loginView from '../components/LoginView';
 import token, { basicToken } from '../spotifyFunctionality/token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
-import axios from 'axios';
-import SendBird from 'sendbird';
+import * as loginActions from '../actions/loginActions';
+import sendbirdStore from '../stores/sendbirdStore';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -21,12 +21,10 @@ export default class loginContainer extends React.Component {
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.basicLogin = this.basicLogin.bind(this);
-    this.generateRandomString = this.generateRandomString.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.registerUser = this.registerUser.bind(this);
-    this.sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
     this.passwordReminder = this.passwordReminder.bind(this);
   }
 
@@ -49,20 +47,8 @@ export default class loginContainer extends React.Component {
     if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
       Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
     } else {
-      const USER_ID = this.state.username
-      this.sb.connect(USER_ID, function(user, error) {});
+      loginActions.sendbirdLogin(this.state.username, this.state.email, this.state.password);
 
-      axios.post('http://192.168.0.73:2018/users', {
-          email: this.state.email,
-          password: this.state.password,
-          username: this.state.username
-      })
-      .then((res) => {
-        console.log(res)
-      })
-      .catch((error) => {
-        console.log(error);
-      });
       spotifyActions.setToken(await basicToken());
       this.props.navigation.navigate('AltLogin');
     }
@@ -89,7 +75,7 @@ export default class loginContainer extends React.Component {
 
   spotifyLogin = async() => {
     let redirectUrl = AuthSession.getRedirectUrl();
-    let scope = 'user-library-read user-top-read';
+    let scope = 'user-library-read user-top-read user-read-email user-read-private user-read-birthdate';
     let state = this.generateRandomString(16);
 
     let result = await AuthSession.startAsync({
@@ -109,6 +95,7 @@ export default class loginContainer extends React.Component {
     const newToken = await token(result.params.code, redirectUrl);
     spotifyActions.setToken(newToken);
     this.props.navigation.navigate('SpotifyInitial')
+
     const userName = fetch('https://api.spotify.com/v1/me', {
       headers: {
       'Content-type': 'application/json',
@@ -116,21 +103,9 @@ export default class loginContainer extends React.Component {
       }
     })
     .then(response => response.json())
-    .then(res => {
-        const spotifyUser = res.display_name;
-        this.sb.connect(spotifyUser, function(user, error) {});
-        axios.post('http://192.168.0.73:2018/users', {
-            email: spotifyUser + '@spotifyLogin',
-            password: 'handled_via_spotify',
-            username: spotifyUser
-        })
-        .then((res) => {
-          console.log(res)
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-      })
+    .then(spotifyProfile => {
+      loginActions.sendbirdLogin(spotifyProfile.display_name, spotifyProfile.email, 'handled_via_spotify');
+    })
   }
 
   basicLogin = async() => {
