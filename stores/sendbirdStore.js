@@ -19,6 +19,9 @@ class SendbirdStore extends EventEmitter {
     this.emit('open_channel_list_update');
   }
 
+  getUserId(){
+    return this.state.user.userId;
+  }
   getOpenChannelList(){
     return this.state.list;
   }
