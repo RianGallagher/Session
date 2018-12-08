@@ -16,7 +16,6 @@ export default class userAssertionContainer extends React.Component {
   storeUserChoice = async() => {
     console.log(this.state.token, this.state.itemsOffset)
     const userProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
-    console.log(userProfile)
     this.props.navigation.navigate('ProfileScreen');
   }
 

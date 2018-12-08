@@ -1,26 +1,31 @@
 import React, { Component } from 'react';
 import ChatScreen from '../components/ChatScreen';
-import SendBird from 'sendbird';
-
+import { sbCreateOpenChannelListQuery } from '../sendbirdActions';
+import * as openChannelActions from '../actions/openChannelActions';
+import sendbirdStore from '../stores/sendbirdStore';
 
 export default class chatScreenContainer extends React.Component {
 
   constructor(props) {
     super(props);
-    state = {}
+    state = {
+      openChannelList: []
+    }
     this.getOpenChats = this.getOpenChats.bind(this);
-    this.sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
+  }
+
+  componentWillMount(){
+    openChannelListQuery= sbCreateOpenChannelListQuery();
+    openChannelActions.getOpenChannelList(openChannelListQuery);
+    sendbirdStore.on('open_channel_list_update', () => {
+      this.setState({openChannelList: sendbirdStore.getOpenChannelList()})
+    })
   }
 
   getOpenChats = async() => {
-    openChannelListQuery = this.sb.OpenChannel.createOpenChannelListQuery();
-    openChannelListQuery.next(function (channels, error) {
-        if (error) {
-            return;
-        }
-        console.log('infunct')
-        console.log(channels);
-    });
+    this.state.openChannelList.forEach((channel) => {
+      console.log(channel.name);
+    })
   }
 
   render() {

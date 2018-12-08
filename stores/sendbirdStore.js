@@ -6,22 +6,30 @@ class SendbirdStore extends EventEmitter {
     super();
     this.state = {
       error: '',
-      user: null
+      user: null,
+      list: []
     }
   }
   setUser(user){
     this.state = {...this.state, user: user};
-    this.emit('user_updated');
+    this.emit('user_update');
   }
-  getToken() {
-    return this.tokens.token;
+  setOpenChannels(list){
+    this.state = {...this.state, list: list}
+    this.emit('open_channel_list_update');
+  }
+
+  getOpenChannelList(){
+    return this.state.list;
   }
   getAll(){
-    return this.tokens;
+    return this.state;
   }
+
   handleActions(action){
     switch(action.type) {
       case 'LOGIN_SUCCESS': this.setUser(action.payload); break;
+      case 'OPEN_CHANNEL_LIST_SUCCESS': this.setOpenChannels(action.list); break;
       default: {
         console.log(typeof action, 'Invalid action');
       }
