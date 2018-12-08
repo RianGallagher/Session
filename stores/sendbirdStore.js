@@ -31,7 +31,7 @@ class SendbirdStore extends EventEmitter {
       case 'LOGIN_SUCCESS': this.setUser(action.payload); break;
       case 'OPEN_CHANNEL_LIST_SUCCESS': this.setOpenChannels(action.list); break;
       default: {
-        console.log(typeof action, 'Invalid action');
+        console.log(typeof action, 'Invalid action: ', action.type, ' error: ', action.error);
       }
     }
   }

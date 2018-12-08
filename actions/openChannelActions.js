@@ -10,7 +10,7 @@ export const getOpenChannelList = (openChannelListQuery) => {
           list: channels
         })
       })
-      .catch((error) => dispatcher.dispatch({ type: 'OPEN_CHANNEL_LIST_FAIL' }))
+      .catch((error) => dispatcher.dispatch({ type: 'OPEN_CHANNEL_LIST_FAIL', error: error}))
   } else {
       dispatch({ type: OPEN_CHANNEL_LIST_FAIL });
   }
