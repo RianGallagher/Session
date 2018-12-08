@@ -46,25 +46,31 @@ export default class loginContainer extends React.Component {
   }
 
   registerUser = async() => {
+    spotifyActions.setToken(await basicToken());
     if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
       Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
     } else {
-      const USER_ID = this.state.username
+      const USER_ID = (this.state.username.replace(/\s/g,''))
       this.sb.connect(USER_ID, function(user, error) {});
-
-      axios.post('http://192.168.0.73:2018/users', {
-          email: this.state.email,
-          password: this.state.password,
-          username: this.state.username
-      })
+      axios.get('http://192.168.0.73:2018/users/username/' + USER_ID, {})
       .then((res) => {
-        console.log(res)
+        if(res.data.length === 0){
+          axios.post('http://192.168.0.73:2018/users', {
+              email: this.state.email,
+              password: this.state.password,
+              username: USER_ID
+          })
+          .then((res) => {
+            console.log(res)
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+          this.props.navigation.navigate('AltLogin');
+        } else {
+          Alert.alert('Oh no! Username already exists:', 'please choose a different username')
+        }
       })
-      .catch((error) => {
-        console.log(error);
-      });
-      spotifyActions.setToken(await basicToken());
-      this.props.navigation.navigate('AltLogin');
     }
   }
 
@@ -118,18 +124,23 @@ export default class loginContainer extends React.Component {
     .then(response => response.json())
     .then(res => {
         const spotifyUser = res.display_name;
-        this.sb.connect(spotifyUser, function(user, error) {});
-        axios.post('http://192.168.0.73:2018/users', {
-            email: spotifyUser + '@spotifyLogin',
-            password: 'handled_via_spotify',
-            username: spotifyUser
-        })
+        this.sb.connect(spotifyUser, function(user, error) {})
+        axios.get('http://192.168.0.73:2018/users/username/' + spotifyUser, {})
         .then((res) => {
-          console.log(res)
+          if(res.data.length === 0){
+            axios.post('http://192.168.0.73:2018/users', {
+              email: spotifyUser + '@spotifyLogin',
+              password: 'handled_via_spotify',
+              username: spotifyUser
+            })
+            .then((res) => {
+              console.log(res)
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          }
         })
-        .catch((error) => {
-          console.log(error);
-        });
       })
   }
 
