@@ -1,3 +1,4 @@
+import { Alert } from 'react-native';
 import React, { Component } from 'react';
 import loginView from '../components/LoginView';
 import token, { basicToken } from '../spotifyFunctionality/token';
@@ -26,6 +27,7 @@ export default class loginContainer extends React.Component {
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.registerUser = this.registerUser.bind(this);
     this.sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
+    this.passwordReminder = this.passwordReminder.bind(this);
   }
 
   handleEmailChange = (emailText) => {
@@ -44,20 +46,35 @@ export default class loginContainer extends React.Component {
   }
 
   registerUser = async() => {
-    const USER_ID = this.state.username
-    this.sb.connect(USER_ID, function(user, error) {});
+    if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
+      Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
+    } else {
+      const USER_ID = this.state.username
+      this.sb.connect(USER_ID, function(user, error) {});
 
-    axios.post('http://192.168.0.73:2018/users', {
-        email: this.state.email,
-        password: this.state.password,
-        username: this.state.username
-    })
-    .then((res) => {
-      console.log(res)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
+      axios.post('http://192.168.0.73:2018/users', {
+          email: this.state.email,
+          password: this.state.password,
+          username: this.state.username
+      })
+      .then((res) => {
+        console.log(res)
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+      spotifyActions.setToken(await basicToken());
+      this.props.navigation.navigate('AltLogin');
+    }
+  }
+
+  passwordReminder = () => {
+    if(this.state.email === ''){
+      Alert.alert('Oops, somethings not quite right: ', 'Please enter your email to proceed')
+    } else {
+      //TODO: implement axios get to confirm the user then send email with password
+      Alert.alert('Success!', 'An email has been sent to your account to reset your password')
+    }
   }
 
   generateRandomString = (length) => {
@@ -99,7 +116,21 @@ export default class loginContainer extends React.Component {
       }
     })
     .then(response => response.json())
-    .then(res => {this.sb.connect(res.display_name, function(user, error) {});})
+    .then(res => {
+        const spotifyUser = res.display_name;
+        this.sb.connect(spotifyUser, function(user, error) {});
+        axios.post('http://192.168.0.73:2018/users', {
+            email: spotifyUser + '@spotifyLogin',
+            password: 'handled_via_spotify',
+            username: spotifyUser
+        })
+        .then((res) => {
+          console.log(res)
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      })
   }
 
   basicLogin = async() => {
@@ -116,7 +147,9 @@ export default class loginContainer extends React.Component {
           handleEmailChange={this.handleEmailChange}
           handlePasswordChange={this.handlePasswordChange}
           handleUsernameChange={this.handleUsernameChange}
-          navigation={this.props.navigation}/>
+          passwordReminder={this.passwordReminder}
+          navigation={this.props.navigation}
+        />
       );
   }
 }

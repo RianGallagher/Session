@@ -15,26 +15,21 @@ export default ProfileScreen = (props) => {
   return(
     <View style={{flex: 1, flexDirection: 'column'}}>
       <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-      <View style={styles.inputContainer}>
-        <Image style={styles.inputIcon} source={{uri: 'https://png.icons8.com/color/search'}}/>
-        <TextInput style={styles.inputs}
-            placeholder="Search"
-            underlineColorAndroid='transparent'
-            onChangeText={(query) => this.setState({query})}/>
-      </View>
       <TouchableHighlight onPress={() => props.navigation.navigate('ChatScreen')}>
-        <View style={{width: 325, height: 225, backgroundColor: 'powderblue', marginBottom: 10}}>
-        <Text>Your Groups/Followed</Text>
+        <View style={[ styles.bigButton, {backgroundColor: 'powderblue'} ]}>
+        <Text style={ styles.profileText }>Groups</Text>
+          <Text style={ styles.profileUnderText }>
+            Jump in and get social! {'\n'}
+            Chat about your favourite music, organise meet-ups, or get a jam session going.
+          </Text>
         </View>
       </TouchableHighlight>
       <TouchableHighlight onPress={() => props.navigation.navigate('Events')}>
-        <View style={{width: 325, height: 125, backgroundColor: 'skyblue', marginBottom: 10}}>
-        <Text>upcoming Events</Text>
-        </View>
-      </TouchableHighlight>
-      <TouchableHighlight onPress={() => props.navigation.navigate('SuggestedList')}>
-        <View style={{width: 325, height: 75, backgroundColor: 'steelblue'}}>
-        <Text>Suggested</Text>
+        <View style={[ styles.bigButton, {backgroundColor: 'skyblue'} ]}>
+        <Text style={ styles.profileText }>Live Events</Text>
+        <Text style={ styles.profileUnderText }>
+          Search for your favourite artists or see what's happening in your area
+        </Text>
         </View>
       </TouchableHighlight>
       </ImageBackground>
@@ -85,4 +80,23 @@ export default ProfileScreen = (props) => {
       fontSize: 44,
       marginBottom: 50
     },
+    bigButton: {
+      width: 325,
+      height: 250,
+      marginBottom: 10,
+      borderRadius: 10,
+      borderWidth: 1,
+      borderColor: '#fff'
+    },
+    profileText: {
+      textAlign: 'center',
+      fontSize: 35,
+      color: 'grey'
+    },
+    profileUnderText: {
+      textAlign: 'center',
+      textAlignVertical: 'center',
+      marginTop: 40,
+      fontSize: 20
+    }
 });

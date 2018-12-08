@@ -63,10 +63,6 @@ export default class spotifyLoginContainer extends React.Component {
     this.setState({ itemsOffset: this.state.itemsOffset + 10}, this.getSpotifySoundProfile);
   }
 
-  onClickListener = (viewId) => {
-    Alert.alert("Alert", "Button pressed " + viewId);
-  }
-
   render() {
     return (
       <SpotifyLoginInitial

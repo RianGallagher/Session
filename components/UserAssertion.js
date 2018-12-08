@@ -15,7 +15,7 @@ export default UserAssertion = (props) => {
     <View style={styles.container}>
       <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
         <Text style={styles.headerText}>Are we right?</Text>
-        <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => props.navigation.navigate('ProfileScreen')}>
+        <TouchableHighlight style={[styles.buttonContainer, styles.spotifyButton]} onPress={() => props.storeUserChoice()}>
           <Text style={styles.spotifyText}>Yeah!</Text>
         </TouchableHighlight>
 
