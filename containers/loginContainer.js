@@ -6,6 +6,7 @@ import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
 import * as loginActions from '../actions/loginActions';
 import sendbirdStore from '../stores/sendbirdStore';
+import axios from 'axios';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -21,6 +22,7 @@ export default class loginContainer extends React.Component {
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.basicLogin = this.basicLogin.bind(this);
+    this.login = this.login.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
@@ -30,7 +32,7 @@ export default class loginContainer extends React.Component {
 
   handleEmailChange = (emailText) => {
     console.log(emailText);
-    this.setState({email: emailText})
+    this.setState({email: emailText.toLowerCase()})
   }
 
   handlePasswordChange = (passwordText) => {
@@ -40,17 +42,77 @@ export default class loginContainer extends React.Component {
 
   handleUsernameChange = (usernameText) => {
     console.log(usernameText);
-    this.setState({username: usernameText})
+    this.setState({username: usernameText.toLowerCase()})
   }
 
   registerUser = async() => {
+    spotifyActions.setToken(await basicToken());
     if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
       Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
     } else {
-      loginActions.sendbirdLogin(this.state.username, this.state.email, this.state.password);
+      loginActions.sendbirdLogin(this.state.username.replace(/\s/g,''), this.state.email, this.state.password);
 
       spotifyActions.setToken(await basicToken());
       this.props.navigation.navigate('AltLogin');
+    }
+  }
+
+  login = () => {
+    let currentUser = '';
+    let pw = '';
+    if(this.state.password === ''){
+      Alert.alert('Attention:', 'please enter a password to continue')
+    } else {
+      if(this.state.email === '' && this.state.username === ''){
+        Alert.alert('Attention:', 'please enter a valid email or username to login')
+      }
+      if(this.state.email === '' && this.state.username !== ''){
+        currentUser = this.state.username;
+        pw = this.state.password;
+        axios.get('http://192.168.0.43:2018/users/username/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.username) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }else if (this.state.email !== '' && this.state.username === ''){
+        currentUser = this.state.email;
+        pw = this.state.password
+        axios.get('http://192.168.0.43:2018/users/email/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.email) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }else{
+        currentUser = this.state.username;
+        pw = this.state.password;
+        axios.get('http://192.168.0.43:2018/users/username/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.username) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+                loginActions.sendbirdLogin(this.state.username.replace(/\s/g,''));
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }
     }
   }
 
@@ -116,6 +178,7 @@ export default class loginContainer extends React.Component {
   render() {
       return (
         <LoginView
+          login={this.login}
           spotifyLogin={this.spotifyLogin}
           basicLogin={this.basicLogin}
           registerUser={this.registerUser}

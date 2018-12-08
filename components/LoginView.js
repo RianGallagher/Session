@@ -46,7 +46,7 @@ export default LoginView = (props) => {
         />
       </View>
 
-      <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.navigation.navigate('ProfileScreen')}>
+      <TouchableHighlight style={[styles.buttonContainer, styles.loginButton]} onPress={() => props.login()}> 
         <Text style={styles.loginText}>Login</Text>
       </TouchableHighlight>
 
