@@ -22,7 +22,7 @@ export default class altLoginContainer extends React.Component {
         items.push({name: genre, code: '#3498db', type: 'genreExpand'})
       })
 
-      items.unshift({ name: 'Tell us what you love...', code: '#666', type: 'info'})
+      items.unshift({ name: 'Tell us what you love, tap on a genre to expand it, tap on an artist to select it.', code: '#666', type: 'info'})
       items.push({ name: '', code: '#666', type: 'button'});
 
       this.setState({items: items});

@@ -54,15 +54,11 @@ export default LoginView = (props) => {
         <Text style={styles.spotifyText}>Spotify</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={[styles.buttonContainer, styles.googleButton]} onPress={() => props.basicLogin()}>
-        <Text style={styles.googleText}>Google</Text>
-      </TouchableHighlight>
-
-      <TouchableHighlight style={styles.buttonContainer} onPress={() => this.onClickListener('restore_password')}>
+      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.passwordReminder()}>
           <Text style={styles.sundryText}>Forgot your password?</Text>
       </TouchableHighlight>
 
-      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.registerUser().then(()=>{props.basicLogin()})}>
+      <TouchableHighlight style={styles.buttonContainer} onPress={() => props.registerUser()}>
           <Text style={styles.sundryText}>Register</Text>
       </TouchableHighlight>
       </ImageBackground>
@@ -128,13 +124,6 @@ const styles = StyleSheet.create({
   },
   spotifyText: {
     color: "#191414",
-    fontSize: 20
-  },
-  googleButton: {
-    backgroundColor: "#DB4437"
-  },
-  googleText: {
-    color: "white",
     fontSize: 20
   },
   headerText: {

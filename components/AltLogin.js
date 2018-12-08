@@ -29,7 +29,7 @@ export default AltLogin = (props) => {
             }
             {item.type == 'selectBand' ?
               <TouchableHighlight onPress = {() => props.selectFavBands(item.name, item.genre, item.code)} >
-                <Text>Tap to Select</Text>
+                <Text></Text>
               </TouchableHighlight> : null
             }
           </View>
