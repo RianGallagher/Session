@@ -21,6 +21,7 @@ export default class loginContainer extends React.Component {
     }
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.basicLogin = this.basicLogin.bind(this);
+    this.login = this.login.bind(this);
     this.generateRandomString = this.generateRandomString.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
@@ -56,13 +57,11 @@ export default class loginContainer extends React.Component {
       .then((res) => {
         if(res.data.length === 0){
           axios.post('http://192.168.0.73:2018/users', {
-              email: this.state.email,
+              email: this.state.email.toLowerCase(),
               password: this.state.password,
-              username: USER_ID
+              username: USER_ID.toLowerCase()
           })
-          .then((res) => {
-            console.log(res)
-          })
+          .then((res) => {})
           .catch((error) => {
             console.log(error);
           });
@@ -71,6 +70,64 @@ export default class loginContainer extends React.Component {
           Alert.alert('Oh no! Username already exists:', 'please choose a different username')
         }
       })
+    }
+  }
+
+  login = () => {
+    let currentUser = '';
+    let pw = '';
+    if(this.state.password === ''){
+      Alert.alert('Attention:', 'please enter a password to continue')
+    } else {
+      if(this.state.email === '' && this.state.username === ''){
+        Alert.alert('Attention:', 'please enter a valid email or username to login')
+      }
+      if(this.state.email === '' && this.state.username !== ''){
+        currentUser = this.state.username.toLowerCase();
+        pw = this.state.password;
+        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.username) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }else if (this.state.email !== '' && this.state.username === ''){
+        currentUser = this.state.email.toLowerCase();
+        pw = this.state.password
+        axios.get('http://192.168.0.73:2018/users/email/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.email) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }else{
+        currentUser = this.state.username.toLowerCase();
+        pw = this.state.password;
+        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        .then((res) => {
+          if(res.data.length === 0){
+            Alert.alert('Attention:', 'please register before attempting to log in')
+          } else if(currentUser === res.data[0].user.username) {
+              if(pw === res.data[0].user.password){
+                this.props.navigation.navigate('ProfileScreen');
+              } else {
+                Alert.alert('Oh no!', 'invalid password entered')
+              }
+          }
+        })
+      }
     }
   }
 
@@ -129,13 +186,11 @@ export default class loginContainer extends React.Component {
         .then((res) => {
           if(res.data.length === 0){
             axios.post('http://192.168.0.73:2018/users', {
-              email: spotifyUser + '@spotifyLogin',
+              email: (spotifyUser + '@spotifyLogin').toLowerCase(),
               password: 'handled_via_spotify',
-              username: spotifyUser
+              username: spotifyUser.toLowerCase()
             })
-            .then((res) => {
-              console.log(res)
-            })
+            .then((res) => {})
             .catch((error) => {
               console.log(error);
             });
@@ -152,6 +207,7 @@ export default class loginContainer extends React.Component {
   render() {
       return (
         <LoginView
+          login={this.login}
           spotifyLogin={this.spotifyLogin}
           basicLogin={this.basicLogin}
           registerUser={this.registerUser}
