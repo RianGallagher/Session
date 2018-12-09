@@ -15,7 +15,7 @@ export default ProfileScreen = (props) => {
   return(
     <View style={{flex: 1, flexDirection: 'column'}}>
       <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-      <TouchableHighlight onPress={() => props.navigation.navigate('ChatScreen')}>
+      <TouchableHighlight onPress={() => props.navigation.navigate('ChatList')}>
         <View style={[ styles.bigButton, {backgroundColor: 'powderblue'} ]}>
         <Text style={ styles.profileText }>Groups</Text>
           <Text style={ styles.profileUnderText }>

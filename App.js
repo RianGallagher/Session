@@ -7,6 +7,7 @@ import userAssertionContainer from './containers/userAssertionContainer';
 import profileScreenContainer from './containers/profileScreenContainer';
 import eventsContainer from './containers/eventsContainer';
 import suggestedListContainer from './containers/suggestedListContainer';
+import chatListContainer from './containers/chatListContainer';
 import chatScreenContainer from './containers/chatScreenContainer';
 
 const RootStack = createStackNavigator(
@@ -41,8 +42,8 @@ const RootStack = createStackNavigator(
         header: null,
       }
     },
-    ChatScreen: {
-      screen: chatScreenContainer,
+    ChatList: {
+      screen: chatListContainer,
       navigationOptions: {
         header: null,
       }
@@ -55,6 +56,12 @@ const RootStack = createStackNavigator(
     },
     SuggestedList: {
       screen: suggestedListContainer,
+      navigationOptions: {
+        header: null,
+      }
+    },
+    ChatScreen: {
+      screen: chatScreenContainer,
       navigationOptions: {
         header: null,
       }
