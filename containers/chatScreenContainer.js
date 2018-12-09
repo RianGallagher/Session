@@ -12,8 +12,7 @@ export default class chatScreenContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: [],
-      openChannelList: ds.cloneWithRows([])
+      list: []
     }
     this.getOpenChats = this.getOpenChats.bind(this);
   }
@@ -23,7 +22,7 @@ export default class chatScreenContainer extends React.Component {
     openChannelActions.getOpenChannelList(openChannelListQuery);
     sendbirdStore.on('open_channel_list_update', () => {
       const newList = [...this.state.list, ...sendbirdStore.getOpenChannelList()];
-      this.setState({list: newList, openChannelList: ds.cloneWithRows(newList)});
+      this.setState({list: newList});
     })
   }
 
@@ -36,6 +35,7 @@ export default class chatScreenContainer extends React.Component {
   render() {
       return (
         <ChatScreen
+          channelList={this.state.list}
           getOpenChats={this.getOpenChats}
         />
       );

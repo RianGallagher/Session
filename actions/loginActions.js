@@ -15,7 +15,7 @@ export const sendbirdLogin = (userId, email='', password='') => {
             username: userId
         })
       }
-      else if(email !== '' || password!=='') {
+      else if(password !== 'handled_via_spotify' && (email !== '' || password!=='')) {
         Alert.alert('Oh no! Username already exists:', 'please choose a different username');
       }
     })

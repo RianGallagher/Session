@@ -8,18 +8,27 @@ import {
   Button,
   Image,
   ImageBackground,
-  Alert
+  Alert,
+  FlatList,
 } from 'react-native';
+import { List, ListItem } from 'react-native-elements'
 
 export default ChatScreen = (props) => {
+  console.log('channel list', props.channelList);
   return(
-    <View style={styles.container}>
-      <ImageBackground source={require('../img/vinylSplash.jpg')} style={styles.imgBackground}>
-        <TouchableHighlight style={styles.buttonContainer} onPress={() => props.getOpenChats()}>
-            <Text style={styles.sundryText}>Chats</Text>
-        </TouchableHighlight>
-      </ImageBackground>
-    </View>
+    <List>
+      <FlatList
+        data={props.channelList}
+        keyExtractor={item => item.url}
+        renderItem={ ({item}) => (
+            <ListItem
+              roundAvatar
+              title={item.name}
+              avatar={ {uri: item.coverUrl} }
+            />
+        )}
+      />
+    </List>
   );
 }
 
