@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import UserAssertion from '../components/UserAssertion';
 import * as soundProfile from '../spotifyFunctionality/soundProfile';
 import spotifyStore from '../stores/spotifyStore';
+import sendbirdStore from '../stores/sendbirdStore';
+import axios from 'axios';
 
 export default class userAssertionContainer extends React.Component {
   constructor(props){
@@ -15,7 +17,10 @@ export default class userAssertionContainer extends React.Component {
 
   storeUserChoice = async() => {
     console.log(this.state.token, this.state.itemsOffset)
-    const userProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
+    const userTasteProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
+    const username = sendbirdStore.getUserId()
+    axios.put('http://192.168.0.73:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
+    .then(res => {console.log(res.data)})
     this.props.navigation.navigate('ProfileScreen');
   }
 
