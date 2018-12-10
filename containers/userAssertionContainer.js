@@ -13,12 +13,11 @@ export default class userAssertionContainer extends React.Component {
       this.storeUserChoice = this.storeUserChoice.bind(this);
   }
 
-    storeUserChoice = async() => {
-      console.log(this.state.token, this.state.itemsOffset)
-      const userProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
-      console.log(userProfile)
-      this.props.navigation.navigate('ProfileScreen');
-    }
+  storeUserChoice = async() => {
+    console.log(this.state.token, this.state.itemsOffset)
+    const userProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
+    this.props.navigation.navigate('ProfileScreen');
+  }
 
   render(){
     return(

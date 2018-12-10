@@ -70,7 +70,6 @@ export default class altLoginContainer extends React.Component {
       if(exists === false){
         favBands.push({name: band, genre: genre, code:'#A65200'});
         this.setState({favBands: favBands});
-        console.log(favBands);
       }
     }
 

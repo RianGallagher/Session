@@ -4,8 +4,9 @@ import loginView from '../components/LoginView';
 import token, { basicToken } from '../spotifyFunctionality/token';
 import { AuthSession } from 'expo';
 import * as spotifyActions from '../actions/spotifyActions';
+import * as loginActions from '../actions/loginActions';
+import sendbirdStore from '../stores/sendbirdStore';
 import axios from 'axios';
-import SendBird from 'sendbird';
 
 const client_id = 'f7410f08c2064e4c9517603f56ed4089';
 
@@ -22,18 +23,16 @@ export default class loginContainer extends React.Component {
     this.spotifyLogin = this.spotifyLogin.bind(this);
     this.basicLogin = this.basicLogin.bind(this);
     this.login = this.login.bind(this);
-    this.generateRandomString = this.generateRandomString.bind(this);
     this.handleEmailChange = this.handleEmailChange.bind(this);
     this.handlePasswordChange = this.handlePasswordChange.bind(this);
     this.handleUsernameChange = this.handleUsernameChange.bind(this);
     this.registerUser = this.registerUser.bind(this);
-    this.sb = new SendBird({ 'appId': 'DB1DDFB5-2EA6-44D1-AEAA-74E33BB11119' });
     this.passwordReminder = this.passwordReminder.bind(this);
   }
 
   handleEmailChange = (emailText) => {
     console.log(emailText);
-    this.setState({email: emailText})
+    this.setState({email: emailText.toLowerCase()})
   }
 
   handlePasswordChange = (passwordText) => {
@@ -43,7 +42,7 @@ export default class loginContainer extends React.Component {
 
   handleUsernameChange = (usernameText) => {
     console.log(usernameText);
-    this.setState({username: usernameText})
+    this.setState({username: usernameText.toLowerCase()})
   }
 
   registerUser = async() => {
@@ -51,25 +50,10 @@ export default class loginContainer extends React.Component {
     if(this.state.username === '' || this.state.password === '' || this.state.email === ''){
       Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
     } else {
-      const USER_ID = (this.state.username.replace(/\s/g,''))
-      this.sb.connect(USER_ID, function(user, error) {});
-      axios.get('http://192.168.0.73:2018/users/username/' + USER_ID, {})
-      .then((res) => {
-        if(res.data.length === 0){
-          axios.post('http://192.168.0.73:2018/users', {
-              email: this.state.email.toLowerCase(),
-              password: this.state.password,
-              username: USER_ID.toLowerCase()
-          })
-          .then((res) => {})
-          .catch((error) => {
-            console.log(error);
-          });
-          this.props.navigation.navigate('AltLogin');
-        } else {
-          Alert.alert('Oh no! Username already exists:', 'please choose a different username')
-        }
-      })
+      loginActions.sendbirdLogin(this.state.username.replace(/\s/g,''), this.state.email, this.state.password);
+
+      spotifyActions.setToken(await basicToken());
+      this.props.navigation.navigate('AltLogin');
     }
   }
 
@@ -83,9 +67,9 @@ export default class loginContainer extends React.Component {
         Alert.alert('Attention:', 'please enter a valid email or username to login')
       }
       if(this.state.email === '' && this.state.username !== ''){
-        currentUser = this.state.username.toLowerCase();
+        currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        axios.get('http://192.168.0.43:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -98,9 +82,9 @@ export default class loginContainer extends React.Component {
           }
         })
       }else if (this.state.email !== '' && this.state.username === ''){
-        currentUser = this.state.email.toLowerCase();
+        currentUser = this.state.email;
         pw = this.state.password
-        axios.get('http://192.168.0.73:2018/users/email/' + currentUser, {})
+        axios.get('http://192.168.0.43:2018/users/email/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -113,15 +97,16 @@ export default class loginContainer extends React.Component {
           }
         })
       }else{
-        currentUser = this.state.username.toLowerCase();
+        currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        axios.get('http://192.168.0.43:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
           } else if(currentUser === res.data[0].user.username) {
               if(pw === res.data[0].user.password){
                 this.props.navigation.navigate('ProfileScreen');
+                loginActions.sendbirdLogin(this.state.username.replace(/\s/g,''));
               } else {
                 Alert.alert('Oh no!', 'invalid password entered')
               }
@@ -152,7 +137,7 @@ export default class loginContainer extends React.Component {
 
   spotifyLogin = async() => {
     let redirectUrl = AuthSession.getRedirectUrl();
-    let scope = 'user-library-read user-top-read';
+    let scope = 'user-library-read user-top-read user-read-email user-read-private user-read-birthdate';
     let state = this.generateRandomString(16);
 
     let result = await AuthSession.startAsync({
@@ -172,6 +157,7 @@ export default class loginContainer extends React.Component {
     const newToken = await token(result.params.code, redirectUrl);
     spotifyActions.setToken(newToken);
     this.props.navigation.navigate('SpotifyInitial')
+
     const userName = fetch('https://api.spotify.com/v1/me', {
       headers: {
       'Content-type': 'application/json',
@@ -179,24 +165,9 @@ export default class loginContainer extends React.Component {
       }
     })
     .then(response => response.json())
-    .then(res => {
-        const spotifyUser = res.display_name;
-        this.sb.connect(spotifyUser, function(user, error) {})
-        axios.get('http://192.168.0.73:2018/users/username/' + spotifyUser, {})
-        .then((res) => {
-          if(res.data.length === 0){
-            axios.post('http://192.168.0.73:2018/users', {
-              email: (spotifyUser + '@spotifyLogin').toLowerCase(),
-              password: 'handled_via_spotify',
-              username: spotifyUser.toLowerCase()
-            })
-            .then((res) => {})
-            .catch((error) => {
-              console.log(error);
-            });
-          }
-        })
-      })
+    .then(spotifyProfile => {
+      loginActions.sendbirdLogin(spotifyProfile.display_name, spotifyProfile.email, 'handled_via_spotify');
+    })
   }
 
   basicLogin = async() => {
