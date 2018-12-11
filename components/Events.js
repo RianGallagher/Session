@@ -101,7 +101,7 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   searchButton: {
-    backgroundColor: "#000080",
+    backgroundColor: '#000080',
   },
   searchText: {
     color: '#c0c0c0',
