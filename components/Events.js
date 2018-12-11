@@ -15,17 +15,6 @@ import GridView from 'react-native-super-grid';
 import Hyperlink from 'react-native-hyperlink';
 import Hr from 'react-native-hr-plus';
 
-// TODO: possibly filter the object by location
-// <View style={styles.inputContainer}>
-//   <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/color/48/000000/international-music.png'}}/>
-//   <TextInput style={styles.inputs} name='location' value={props.location} type ='input'
-//       placeholder="Location"
-//       keyboardType="email-address"
-//       underlineColorAndroid='transparent'
-//       onChangeText={props.handleLocationChange}
-//   />
-// </View>
-
 export default Events = (props) => {
     return(
       <View style={styles.container}>
@@ -41,14 +30,24 @@ export default Events = (props) => {
             />
           </View>
 
+          <View style={styles.inputContainer}>
+            <Image style={styles.inputIcon} source={{uri: 'https://img.icons8.com/color/48/000000/international-music.png'}}/>
+            <TextInput style={styles.inputs} name='location' value={props.location} type ='input'
+              placeholder="Filter by City"
+              keyboardType="email-address"
+              underlineColorAndroid='transparent'
+              onChangeText={props.handleLocationChange}
+            />
+          </View>
+
           <TouchableHighlight style={[styles.buttonContainer, styles.searchButton]} onPress={() => props.songkickSearch()}>
             <Text style={styles.searchText}>Search</Text>
           </TouchableHighlight>
 
-            <ScrollView style={styles.eventBucket}>
-              <Text style={styles.profileText}>Events</Text>
-              {props.renderEvents()}
-            </ScrollView>
+          <ScrollView style={styles.eventBucket}>
+            <Text style={styles.profileText}>Events</Text>
+            {props.renderEvents()}
+          </ScrollView>
 
         </ImageBackground>
       </View>

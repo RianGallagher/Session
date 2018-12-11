@@ -32,6 +32,7 @@ export default class eventsContainer extends React.Component {
   }
 
   songkickSearch = (artist, location) => {
+    this.state.artistInfo = [];
     let artistInfo = this.state.artistInfo;
     axios.get('https://api.songkick.com/api/3.0/search/artists.json?apikey=ezyaPVFXDxEcDrXu&query=' + this.state.artist + '&per_page=1')
       .then((res) => {
@@ -47,7 +48,13 @@ export default class eventsContainer extends React.Component {
                   let location = res.data.resultsPage.results.event[i].location.city;
                   let date = res.data.resultsPage.results.event[i].start.date;
                   let uri = res.data.resultsPage.results.event[i].uri;
-                  artistInfo.push({name: artistName, venue: venue, location: location, date: date, uri: uri});
+                  if (this.state.location !== ''){
+                    if(location.split(',')[0].toLowerCase() === this.state.location.toLowerCase()){
+                      artistInfo.push({name: artistName, venue: venue, location: location, date: date, uri: uri});
+                    }
+                  } else {
+                      artistInfo.push({name: artistName, venue: venue, location: location, date: date, uri: uri});
+                  }
                   this.setState({artistInfo: artistInfo});
                 }
               }
