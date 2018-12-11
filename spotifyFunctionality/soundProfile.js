@@ -39,12 +39,25 @@ export function getGeneralTopGenres(token){
     }
   })
   .then(response => response.json())
-  .then(res => { return res.genres })
+  .then(res => {
+    function shuffle(array){
+      let randomIndex, temp;
+      for (let i = array.length - 1; i > 0; i--) {
+        randomIndex = Math.floor(Math.random() * (i + 1));
+        temp = array[i];
+        array[i] = array[randomIndex];
+        array[randomIndex] = temp;
+      }
+      return array;
+    }
+    shuffle(res.genres);
+    return res.genres
+  })
   .catch(err => console.log('err', err));
 }
 
 export function getRecommendations(genre){
-  return fetch('https://api.spotify.com/v1/recommendations?seed_genres=' + encodeURIComponent(genre), {
+  return fetch('https://api.spotify.com/v1/recommendations?limit=10&seed_genres=' + encodeURIComponent(genre), {
     headers: {
       'Content-type': 'application/json',
       'Authorization': 'Bearer ' + token
