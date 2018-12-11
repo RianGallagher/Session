@@ -28,7 +28,7 @@ export default AltLogin = (props) => {
               </TouchableHighlight> : null
             }
             {item.type == 'button' ?
-              <TouchableHighlight onPress={() => props.navigation.navigate('ProfileScreen')}>
+              <TouchableHighlight onPress={() => props.saveUserSelection()}>
                 <Text style={styles.gridButton}>Continue</Text>
               </TouchableHighlight> : null
             }

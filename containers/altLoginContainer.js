@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AltLogin from '../components/AltLogin';
 import spotifyStore from '../stores/spotifyStore';
 import * as soundProfile from '../spotifyFunctionality/soundProfile';
+import sendbirdStore from '../stores/sendbirdStore';
+import axios from 'axios';
 
 export default class altLoginContainer extends React.Component {
     constructor(props){
@@ -16,6 +18,7 @@ export default class altLoginContainer extends React.Component {
       this.getRecommendations = this.getRecommendations.bind(this);
       this.selectFavBands = this.selectFavBands.bind(this);
       this.addMoreBands = this.addMoreBands.bind(this);
+      this.saveUserSelection = this.saveUserSelection.bind(this);
     }
 
     getTopGenres = async() => {
@@ -96,8 +99,12 @@ export default class altLoginContainer extends React.Component {
 
     }
 
-    onClickListener = (viewId) => {
-      Alert.alert("Alert", "Button pressed " + viewId);
+    saveUserSelection = async() => {
+      const username = sendbirdStore.getUserId()
+      const userTasteProfile = this.state.favBands;
+      axios.put('http://149.157.122.223:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
+      .then(res => {console.log(res.data)})
+      this.props.navigation.navigate('ProfileScreen')
     }
 
     render() {
@@ -107,6 +114,7 @@ export default class altLoginContainer extends React.Component {
             addMoreBands={this.addMoreBands}
             getRecommendations={this.getRecommendations}
             selectFavBands={this.selectFavBands}
+            saveUserSelection={this.saveUserSelection}
             navigation={this.props.navigation}
           />
       )
