@@ -69,7 +69,7 @@ export default class loginContainer extends React.Component {
       if(this.state.email === '' && this.state.username !== ''){
         currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        axios.get('http://149.157.122.223:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -84,7 +84,7 @@ export default class loginContainer extends React.Component {
       }else if (this.state.email !== '' && this.state.username === ''){
         currentUser = this.state.email;
         pw = this.state.password
-        axios.get('http://192.168.0.73:2018/users/email/' + currentUser, {})
+        axios.get('http://149.157.122.223:2018/users/email/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -99,7 +99,7 @@ export default class loginContainer extends React.Component {
       }else{
         currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
+        axios.get('http://149.157.122.223:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')

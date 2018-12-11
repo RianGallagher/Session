@@ -45,7 +45,7 @@ export default class spotifyLoginContainer extends React.Component {
         { name: '', code: '#666', type: 'info'}
       );
     }
-    nextItems.push({ name: 'continue', code: '#666', type: 'button'}, { name: 'more', code: '#666', type: 'button'});
+    nextItems.push({ name: 'more', code: '#666', type: 'button'}, { name: 'continue', code: '#666', type: 'button'});
 
     // remove continue and more button (this last two elements) from original list
     const previousItems = this.state.items.slice(0, this.state.items.length-2);

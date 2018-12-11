@@ -17,17 +17,17 @@ export default SpotifyLoginInitial = (props) => {
       items={props.items}
       style={styles.gridView}
       renderItem={item => (
-        <View style={[styles.itemContainer, { backgroundColor: item.code }]}>
+        <View style={[ styles.itemContainer, { backgroundColor: item.code } ]}>
           { item.type==='musicTile' ? <Text style={styles.itemName}>{item.name}</Text> : null }
           { item.type==='info' ? <Text style={styles.gridPrompts}>{item.name}</Text> : null }
           { item.name==='more' ?
-            <TouchableHighlight onPress={() => props.handleUpdate()}>
+            <TouchableHighlight style={styles.buttonsBox} onPress={() => props.handleUpdate()}>
               <Text style={styles.gridButton}>More</Text>
             </TouchableHighlight>
             : null
           }
           { item.name=='continue' ?
-            <TouchableHighlight onPress={() => props.navigation.navigate('UserAssertion')}>
+            <TouchableHighlight style={styles.buttonsBox} onPress={() => props.navigation.navigate('UserAssertion')}>
               <Text style={styles.gridButton}>Continue</Text>
             </TouchableHighlight>
             : null
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     justifyContent: 'center',
-    // alignItems: 'center',
+    flex: 1,
     borderRadius: 5,
     padding: 10,
     height: 150,
@@ -70,6 +70,11 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     color: '#fff',
     fontSize: 18,
-    fontWeight: '600'
+    fontWeight: '600',
+  },
+  buttonsBox: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

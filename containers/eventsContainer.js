@@ -23,7 +23,7 @@ export default class eventsContainer extends React.Component {
     this.state = {
       artist   : '',
       location: '',
-      artistInfo: []
+      artistInfo: [],
     }
     this.handleArtistChange = this.handleArtistChange.bind(this);
     this.handleLocationChange = this.handleLocationChange.bind(this);
@@ -35,24 +35,27 @@ export default class eventsContainer extends React.Component {
     let artistInfo = this.state.artistInfo;
     axios.get('https://api.songkick.com/api/3.0/search/artists.json?apikey=ezyaPVFXDxEcDrXu&query=' + this.state.artist + '&per_page=1')
       .then((res) => {
-        let artistId = res.data.resultsPage.results.artist[0].id;
-        let resNum = 10;
-        axios.get('https://api.songkick.com/api/3.0/artists/' + artistId + '/calendar.json?apikey=ezyaPVFXDxEcDrXu&per_page=' + resNum)
-          .then((res) => {
-            for (i=0; i<resNum; i++){
-              let artistName = res.data.resultsPage.results.event[i].performance[0].artist.displayName;
-              let venue = res.data.resultsPage.results.event[i].venue.displayName;
-              let location = res.data.resultsPage.results.event[i].location.city;
-              let date = res.data.resultsPage.results.event[i].start.date;
-              let uri = res.data.resultsPage.results.event[i].uri;
-              artistInfo.push({name: artistName, venue: venue, location: location, date: date, uri: uri});
-              this.setState({artistInfo: artistInfo});
-            }
-
-          })
-          .catch((error) => {
-            console.log(error);
-          })
+        if(res.data.resultsPage.totalEntries!==0){
+          let artistId = res.data.resultsPage.results.artist[0].id;
+          let resNum = 30;
+          axios.get('https://api.songkick.com/api/3.0/artists/' + artistId + '/calendar.json?apikey=ezyaPVFXDxEcDrXu&per_page=' + resNum)
+            .then((res) => {
+              if(res.data.resultsPage.results.event.length!==0){
+                for (i=0; i<res.data.resultsPage.results.event.length; i++){
+                  let artistName = res.data.resultsPage.results.event[i].performance[0].artist.displayName;
+                  let venue = res.data.resultsPage.results.event[i].venue.displayName;
+                  let location = res.data.resultsPage.results.event[i].location.city;
+                  let date = res.data.resultsPage.results.event[i].start.date;
+                  let uri = res.data.resultsPage.results.event[i].uri;
+                  artistInfo.push({name: artistName, venue: venue, location: location, date: date, uri: uri});
+                  this.setState({artistInfo: artistInfo});
+                }
+              }
+            })
+            .catch((error) => {
+              console.log(error);
+            })
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -60,15 +63,19 @@ export default class eventsContainer extends React.Component {
     }
 
   renderEvents = () => {
-    console.log(this.state.artistInfo)
+    if(this.state.artistInfo.length===0){
+      return(<Text> {'\n'} No dates for current artist, Try a new search! </Text>)
+    } else {
     return this.state.artistInfo.map((data, index) => {
       return (
         <View key={index}>
           <Text>{'\n'}</Text>
-          <Text>{data.name},{'\n'}</Text>
-          <Text>{data.venue},{'\n'}</Text>
+            { data.name.toLowerCase()===this.state.artist.toLowerCase() ? <Text>{data.name},{'\n'}</Text> : null }
+          <Text>
+            { data.venue.toLowerCase()==='unknown venue' ? <Text>Festival,{'\n'}</Text> : <Text>{data.venue},{'\n'}</Text> }
+          </Text>
           <Text>{data.location},{'\n'}</Text>
-          <Text>{moment(data.date).format('do MMMM YYYY')}.{'\n'}</Text>
+          <Text>{moment(new Date(data.date)).format('Do MMMM YYYY')}.{'\n'}</Text>
           <Hyperlink
             linkDefault={ true }
             linkStyle={ { color: '#2980b9' } }
@@ -79,10 +86,13 @@ export default class eventsContainer extends React.Component {
             </Text>
           </Hyperlink>
           <Text>{'\n'}</Text>
-          <Hr/>
+          <Hr>
+            <Text></Text>
+          </Hr>
         </View>
       )
     });
+   }
   }
 
   handleArtistChange = (artist) => {
