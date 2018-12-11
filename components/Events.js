@@ -97,19 +97,19 @@ const styles = StyleSheet.create({
     borderRadius:30,
   },
   searchButton: {
-    backgroundColor: "#000080",
+    backgroundColor: '#000080',
   },
   searchText: {
     color: '#c0c0c0',
     fontSize: 20
   },
-  artistInfoContainers: {
-    height:45,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30
-  }
+  eventsContainer: {
+    width: 325,
+    height: 250,
+    marginBottom: 10,
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: 'powderblue'
+  },
 });

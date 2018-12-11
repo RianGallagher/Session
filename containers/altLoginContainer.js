@@ -7,24 +7,32 @@ export default class altLoginContainer extends React.Component {
     constructor(props){
       super(props);
       this.state = {
+        min: 0,
+        max: 25,
+        allItems: [],
         items: [],
         favBands: []
       }
       this.getRecommendations = this.getRecommendations.bind(this);
       this.selectFavBands = this.selectFavBands.bind(this);
+      this.addMoreBands = this.addMoreBands.bind(this);
     }
 
     getTopGenres = async() => {
       const genres = await soundProfile.getGeneralTopGenres(spotifyStore.getToken());
-      let items = [];
+      let allItems = this.state.allItems;
 
       genres.forEach( genre => {
-        items.push({name: genre, code: '#3498db', type: 'genreExpand'})
+        allItems.push({name: genre, code: '#3498db', type: 'genreExpand'})
       })
 
-      items.unshift({ name: 'Tell us what you love, tap on a genre to expand it, tap on an artist to select it.', code: '#666', type: 'info'})
-      items.push({ name: '', code: '#666', type: 'button'});
-
+      allItems.unshift({ name: 'Tell us what you love, tap on a genre to expand it, tap on an artist to select it.', code: '#666', type: 'info'});
+      this.setState({allItems: allItems});
+      let items = [];
+      for(i=this.state.min; i<=this.state.max; i++){
+        items.push(allItems[i]);
+      }
+      items.push({ name: '', code: '#666', type: 'addMore'}, { name: '', code: '#666', type: 'button'});
       this.setState({items: items});
     }
 
@@ -73,7 +81,20 @@ export default class altLoginContainer extends React.Component {
       }
     }
 
+    async addMoreBands(){
+      let min = this.state.min + 26;
+      let max = this.state.max + 26;
+      const allItems = this.state.allItems;
+      this.setState({min: this.state.min+25, max: this.state.max+25}, () => {
+        let newItems = this.state.items.slice(0, this.state.items.length-2);
+        for(i=min; i<=max; i++){
+          newItems.push(allItems[i]);
+        }
+        newItems.push({ name: '', code: '#666', type: 'addMore'}, { name: '', code: '#666', type: 'button'});
+        this.setState({items: newItems});
+      });
 
+    }
 
     onClickListener = (viewId) => {
       Alert.alert("Alert", "Button pressed " + viewId);
@@ -83,6 +104,7 @@ export default class altLoginContainer extends React.Component {
       return (
           <AltLogin
             items={this.state.items}
+            addMoreBands={this.addMoreBands}
             getRecommendations={this.getRecommendations}
             selectFavBands={this.selectFavBands}
             navigation={this.props.navigation}
