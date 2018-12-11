@@ -6,13 +6,14 @@ import axios from 'axios';
 export const sendbirdLogin = (userId, email='', password='') => {
   sbConnect(userId)
   .then((user) => {
-    axios.get('http://149.157.122.223:2018/users/username/' + userId)
+    axios.get('http://192.168.0.73:2018/users/username/' + userId)
     .then((res) => {
       if(res.data.length === 0){
-        axios.post('http://149.157.122.223:2018/users', {
+        axios.post('http://192.168.0.73:2018/users', {
             email: email,
             password: password,
-            username: userId
+            username: userId,
+            tasteProfile: []
         })
       }
       else if(password !== 'handled_via_spotify' && (email !== '' || password!=='')) {

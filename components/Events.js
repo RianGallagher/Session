@@ -110,7 +110,7 @@ const styles = StyleSheet.create({
   eventBucket: {
     flexGrow: 0,
     width: 325,
-    height: 350,
+    height: 300,
     marginBottom: 10,
     borderRadius: 10,
     borderWidth: 1,
@@ -122,10 +122,4 @@ const styles = StyleSheet.create({
     fontSize: 35,
     color: 'grey'
   },
-  profileUnderText: {
-    textAlign: 'center',
-    textAlignVertical: 'center',
-    marginTop: 40,
-    fontSize: 20
-  }
 });
