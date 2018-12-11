@@ -51,7 +51,6 @@ export default class loginContainer extends React.Component {
       Alert.alert('Somethings not quite right:', 'Please check all fields have been filled');
     } else {
       loginActions.sendbirdLogin(this.state.username.replace(/\s/g,''), this.state.email, this.state.password);
-
       spotifyActions.setToken(await basicToken());
       this.props.navigation.navigate('AltLogin');
     }
@@ -69,7 +68,7 @@ export default class loginContainer extends React.Component {
       if(this.state.email === '' && this.state.username !== ''){
         currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://149.157.122.223:2018/users/username/' + currentUser, {})
+        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -84,7 +83,7 @@ export default class loginContainer extends React.Component {
       }else if (this.state.email !== '' && this.state.username === ''){
         currentUser = this.state.email;
         pw = this.state.password
-        axios.get('http://149.157.122.223:2018/users/email/' + currentUser, {})
+        axios.get('http://192.168.0.73:2018/users/email/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -99,7 +98,7 @@ export default class loginContainer extends React.Component {
       }else{
         currentUser = this.state.username;
         pw = this.state.password;
-        axios.get('http://149.157.122.223:2018/users/username/' + currentUser, {})
+        axios.get('http://192.168.0.73:2018/users/username/' + currentUser, {})
         .then((res) => {
           if(res.data.length === 0){
             Alert.alert('Attention:', 'please register before attempting to log in')
@@ -156,8 +155,6 @@ export default class loginContainer extends React.Component {
     }
     const newToken = await token(result.params.code, redirectUrl);
     spotifyActions.setToken(newToken);
-    this.props.navigation.navigate('SpotifyInitial')
-
     const userName = fetch('https://api.spotify.com/v1/me', {
       headers: {
       'Content-type': 'application/json',
@@ -167,6 +164,18 @@ export default class loginContainer extends React.Component {
     .then(response => response.json())
     .then(spotifyProfile => {
       loginActions.sendbirdLogin(spotifyProfile.display_name.toLowerCase(), spotifyProfile.email.toLowerCase(), 'handled_via_spotify');
+      axios.get('http://192.168.0.73:2018/users/username/' + spotifyProfile.display_name.toLowerCase(), {})
+      .then(res => {
+          if(res.data.length===0){
+            this.props.navigation.navigate('SpotifyInitial')
+          } else {
+            if(res.data[0].user.tasteProfile.length!==0){
+              this.props.navigation.navigate('ProfileScreen')
+            } else {
+              this.props.navigation.navigate('SpotifyInitial')
+            }
+          }
+      })
     })
   }
 

@@ -18,7 +18,6 @@ export default async (code, redirectUrl) => {
   });
   const json = await res.json();
   token = json.access_token;
-  console.log('token is', token);
   return token;
 }
 

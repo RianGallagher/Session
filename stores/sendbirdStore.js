@@ -72,8 +72,6 @@ class SendbirdStore extends EventEmitter {
   }
 
   handleActions(action){
-    // dispatcher.waitFor([sendbirdStore.dispatchToken]);
-    console.log('in store', action.type);
     switch(action.type) {
       case 'LOGIN_SUCCESS': this.setUser(action.payload); break;
       case 'OPEN_CHANNEL_LIST_SUCCESS': this.setOpenChannels(action.list); break;
