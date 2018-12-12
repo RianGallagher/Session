@@ -12,7 +12,8 @@ export const sendbirdLogin = (userId, email='', password='') => {
         axios.post('http://192.168.0.43:2018/users', {
             email: email,
             password: password,
-            username: userId
+            username: userId,
+            tasteProfile: []
         })
       }
       else if(password !== 'handled_via_spotify' && (email !== '' || password!=='')) {
