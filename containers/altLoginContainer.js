@@ -13,7 +13,8 @@ export default class altLoginContainer extends React.Component {
         max: 25,
         allItems: [],
         items: [],
-        favBands: []
+        artists: [],
+        genres: []
       }
       this.getRecommendations = this.getRecommendations.bind(this);
       this.selectFavBands = this.selectFavBands.bind(this);
@@ -49,7 +50,7 @@ export default class altLoginContainer extends React.Component {
 
       tempItems = this.state.items;
       tempItems.find(function(item, i){
-        if(item.name === genre){
+        if(item.name === genre && item.code === '#3498db'){
           index = i;
           item.code = '#000080'
         }
@@ -63,25 +64,28 @@ export default class altLoginContainer extends React.Component {
     }
 
     async selectFavBands(band, genre, code){
-      let favBands = this.state.favBands;
+      let artists = this.state.artists;
+      let genres = this.state.genres
       let tempItems = this.state.items;
       let exists = false;
-      favBands.find(function(item, i){
-        if(item.name === band){
+      artists.find(function(item, i){
+        if(item === band){
           index = i;
           exists = true;
         }
       });
       tempItems.find(function(item, i){
         if(item.name === band){
-          index = i;
           item.code = '#A65200';
         }
       });
       if(exists === false){
-        favBands.push({name: band, genre: genre, code:'#A65200'});
-        this.setState({favBands: favBands});
+        artists.push(band);
+        genres.push(genre);
+        this.setState({artists: artists});
+        this.setState({genres: genres});
       }
+      console.log(artists, genres);
     }
 
     async addMoreBands(){
@@ -101,7 +105,7 @@ export default class altLoginContainer extends React.Component {
 
     saveUserSelection = async() => {
       const username = sendbirdStore.getUserId()
-      const userTasteProfile = this.state.favBands;
+      const userTasteProfile = { 'artists': this.state.artists, 'genres': this.state.genres };
       axios.put('http://192.168.0.73:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
       .then(res => {console.log(res.data)})
       this.props.navigation.navigate('ProfileScreen')
