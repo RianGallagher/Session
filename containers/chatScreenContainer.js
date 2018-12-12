@@ -1,22 +1,7 @@
-// import React, { Component } from 'react';
-// import ChatScreen from '../components/ChatScreen';
-//
-// export default class chatScreenContainer extends React.Component{
-//   constructor(){
-//     super();
-//   }
-//
-//   render(){
-//     return(
-//       <ChatScreen />
-//     )
-//   }
-// }
-
 import React, { Component } from 'react';
 import sendbirdStore from '../stores/sendbirdStore';
-import { GiftedChat, Send } from 'react-native-gifted-chat';
-import { View, ListView, Image } from 'react-native';
+import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat';
+import { View, ListView, Image, Text, Platform } from 'react-native';
 import {
     initChatScreen,
     createChatHandler,
@@ -24,11 +9,8 @@ import {
     getPrevMessageList,
     channelExit,
 } from '../actions/chatActions';
-
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 import { Button } from 'react-native-elements';
-import { TextItem } from '../components/messages/MessageItem';
-import { MessageInput } from '../components/messages/MessageInput';
-import { Message } from '../components/messages/Message';
 
 import {
     sbGetOpenChannel,
@@ -118,32 +100,7 @@ export default class chatScreenContainer extends Component {
             const { textMessage } = this.state;
             this.setState({ textMessage: '' }, () => {
                 onSendButtonPress(channelUrl, textMessage);
-                // this.refs.chatSection.scrollTo({ y: 0 });
             });
-        }
-    }
-
-    _renderList = (rowData) => {
-        // const { channel } = this.state;
-        if (rowData.isUserMessage()) {
-            return (
-                <Message
-                    key={rowData.messageId ? rowData.messageId : rowData.reqId}
-                    isShow={rowData.sender.isShow}
-                    isUser={rowData.isUser}
-                    profileUrl={rowData.sender.profileUrl.replace('http://', 'https://')}
-                    nickname={rowData.sender.nickname}
-                    time={rowData.time}
-                    message={(
-                        <TextItem
-                            isUser={rowData.isUser}
-                            message={rowData.message}
-                        />
-                    )}
-                />
-            )
-        } else { // FileMessage/AdminMessage
-            return (<View></View>)
         }
     }
 
@@ -151,7 +108,7 @@ export default class chatScreenContainer extends Component {
       return (
         <Send {...props} >
           <View style={{marginRight: 10, marginBottom: 5}}>
-            <Image source={{uri: 'https://image.flaticon.com/icons/svg/60/60525.svg'}} resizeMode={'center'}/>
+            <Image style={{width:40, height:40}} source={{uri: 'https://cdn3.iconfinder.com/data/icons/mail-1-glyph/512/45-Send-512.png'}} />
           </View>
         </Send>
       );
@@ -159,6 +116,7 @@ export default class chatScreenContainer extends Component {
 
     render() {
         return (
+          <View style={{flex: 1}}>
             <GiftedChat
               text={this.state.textMessage}
               onInputTextChanged={text => this._onTextMessageChanged(text)}
@@ -168,31 +126,15 @@ export default class chatScreenContainer extends Component {
                 _id: sendbirdStore.getUserId(),
                 avatar: sendbirdStore.getUser().profileUrl
               }}
+
+              renderSend={this.renderSend}
+              alwaysShowSend
             />
+          {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={25}/> : null }
+          </View>
         )
     }
 }
-
-const ds = new ListView.DataSource({
-    rowHasChanged: (r1, r2) => r1 !== r2
-})
-
-function mapStateToProps({ chat }) {
-    const { exit } = chat;
-    list = ds.cloneWithRows(sbAdjustMessageList(chat.list));
-    return { list, exit }
-}
-
-// export default connect(
-//     mapStateToProps,
-//     {
-//         initChatScreen,
-//         createChatHandler,
-//         onSendButtonPress,
-//         getPrevMessageList,
-//         channelExit
-//     }
-// )(chatScreenContainer);
 
 const styles = {
     renderTypingViewStyle: {
