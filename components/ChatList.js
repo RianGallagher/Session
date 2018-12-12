@@ -9,55 +9,53 @@ import {
   Image,
   ImageBackground,
   Alert,
-  FlatList,
+  FlatList
 } from 'react-native';
-import { List, ListItem } from 'react-native-elements'
+import { List, ListItem } from 'react-native-elements';
 
-export default ChatList = (props) => {
-  console.log('channel list', props.channelList);
-  return(
+export default (ChatList = props => {
+  return (
     <List>
       <FlatList
         data={props.channelList}
         keyExtractor={item => item.url}
-        renderItem={ ({item}) => (
-            <ListItem
-              roundAvatar
-              title={item.name}
-              avatar={ {uri: item.coverUrl} }
-              onPress={() => props.navigateToChat(item.url)}
-            />
+        renderItem={({ item }) => (
+          <ListItem
+            roundAvatar
+            title={item.name}
+            avatar={{ uri: item.coverUrl }}
+            onPress={() => props.navigateToChat(item.url)}
+          />
         )}
       />
     </List>
   );
-}
+});
 
 const styles = StyleSheet.create({
   container: {
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
-      backgroundColor: '#FF8300',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   imgBackground: {
-      width: '100%',
-      height: '100%',
-      flex: 1,
-      justifyContent: 'center',
-      alignItems: 'center',
+    width: '100%',
+    height: '100%',
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   sundryText: {
-    color: "#c0c0c0",
+    color: '#c0c0c0',
     fontSize: 20
   },
   buttonContainer: {
-    height:45,
+    height: 45,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    marginBottom:20,
-    width:250,
-    borderRadius:30,
-  },
+    marginBottom: 20,
+    width: 250,
+    borderRadius: 30
+  }
 });

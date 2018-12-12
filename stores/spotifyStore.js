@@ -7,21 +7,23 @@ class SpotifyStore extends EventEmitter {
     this.tokens = {
       token: '',
       refreshToken: ''
-    }
+    };
   }
-  setToken(token){
+  setToken(token) {
     this.tokens.token = token;
     this.emit('token_updated');
   }
   getToken() {
     return this.tokens.token;
   }
-  getAll(){
+  getAll() {
     return this.tokens;
   }
-  handleActions(action){
-    switch(action.type) {
-      case 'SET_TOKEN': this.setToken(action.token); break;
+  handleActions(action) {
+    switch (action.type) {
+      case 'SET_TOKEN':
+        this.setToken(action.token);
+        break;
       default: {
         console.log(typeof action, 'Invalid action');
       }
