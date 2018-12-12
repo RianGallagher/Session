@@ -50,6 +50,9 @@ class SendbirdStore extends EventEmitter {
     this.emit('message_list_update');
   }
 
+  getUser(){
+    return this.state.user;
+  }
   getUserId(){
     return this.state.user.userId;
   }

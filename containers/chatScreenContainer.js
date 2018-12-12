@@ -38,12 +38,12 @@ import {
 
 export default class chatScreenContainer extends Component {
     constructor(props) {
-        super(props);
-        this.state = {
-            previousMessageListQuery: null,
-            textMessage: '',
-            messageList: []
-        }
+      super(props);
+      this.state = {
+          previousMessageListQuery: null,
+          textMessage: '',
+          messageList: []
+      }
     }
 
     componentDidMount() {
@@ -58,8 +58,7 @@ export default class chatScreenContainer extends Component {
                 _id: message._sender.userId,
                 name: message._sender.userId,
                 avatar: message._sender.profileUrl
-              },
-              image: message._sender.profileUrl
+              }
             });
           });
           this.setState({messageList: newList});
@@ -166,7 +165,8 @@ export default class chatScreenContainer extends Component {
               messages={this.state.messageList}
               onSend={this._onSendButtonPress}
               user={{
-                _id: 1
+                _id: sendbirdStore.getUserId(),
+                avatar: sendbirdStore.getUser().profileUrl
               }}
             />
         )
