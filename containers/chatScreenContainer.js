@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import sendbirdStore from '../stores/sendbirdStore';
-import { GiftedChat, Send, Bubble } from 'react-native-gifted-chat';
-import { View, ListView, Image, Text, Platform } from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
+import { View, Image, Platform } from 'react-native';
 import {
     initChatScreen,
     createChatHandler,
@@ -10,7 +10,6 @@ import {
     channelExit,
 } from '../actions/chatActions';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
-import { Button } from 'react-native-elements';
 
 import {
     sbGetOpenChannel,
@@ -133,31 +132,5 @@ export default class chatScreenContainer extends Component {
           {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={25}/> : null }
           </View>
         )
-    }
-}
-
-const styles = {
-    renderTypingViewStyle: {
-        flexDirection: 'row',
-        marginLeft: 14,
-        marginRight: 14,
-        marginTop: 4,
-        marginBottom: 0,
-        paddingBottom: 0,
-        height: 14
-    },
-    containerViewStyle: {
-        backgroundColor: '#fff',
-        flex: 1
-    },
-    messageListViewStyle: {
-        flex: 10,
-        transform: [{ scaleY: -1 }]
-    },
-    messageInputViewStyle: {
-        flex: 1,
-        marginBottom: 8,
-        flexDirection: 'column',
-        justifyContent: 'center'
     }
 }
