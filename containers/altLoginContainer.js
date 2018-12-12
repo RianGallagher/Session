@@ -102,7 +102,7 @@ export default class altLoginContainer extends React.Component {
     saveUserSelection = async() => {
       const username = sendbirdStore.getUserId()
       const userTasteProfile = this.state.favBands;
-      axios.put('http://149.157.122.223:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
+      axios.put('http://192.168.0.43:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
       .then(res => {console.log(res.data)})
       this.props.navigation.navigate('ProfileScreen')
     }

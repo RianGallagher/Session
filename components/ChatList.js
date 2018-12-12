@@ -14,7 +14,6 @@ import {
 import { List, ListItem } from 'react-native-elements'
 
 export default ChatList = (props) => {
-  console.log('channel list', props.channelList);
   return(
     <List>
       <FlatList

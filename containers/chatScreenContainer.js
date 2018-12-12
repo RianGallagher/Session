@@ -15,7 +15,8 @@
 
 import React, { Component } from 'react';
 import sendbirdStore from '../stores/sendbirdStore';
-import { View, ListView } from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
+import { View, ListView, Image } from 'react-native';
 import {
     initChatScreen,
     createChatHandler,
@@ -41,15 +42,28 @@ export default class chatScreenContainer extends Component {
         this.state = {
             previousMessageListQuery: null,
             textMessage: '',
-            messageList: ds.cloneWithRows(sbAdjustMessageList(sendbirdStore.getMessageList()))
+            messageList: []
         }
     }
 
     componentDidMount() {
         sendbirdStore.on('message_list_update', () => {
-          this.setState({messageList: ds.cloneWithRows(sbAdjustMessageList(sendbirdStore.getMessageList()))});
+          let newList = [];
+          sendbirdStore.getMessageList().forEach((message) => {
+            newList.push({
+              _id: message.messageId,
+              text: message.message,
+              createdAt: message.createdAt,
+              user: {
+                _id: message._sender.userId,
+                name: message._sender.userId,
+                avatar: message._sender.profileUrl
+              },
+              image: message._sender.profileUrl
+            });
+          });
+          this.setState({messageList: newList});
         });
-        console.log('message list', this.state.messageList);
         initChatScreen();
 
         const channelUrl = this.props.navigation.getParam('channelUrl');
@@ -105,7 +119,7 @@ export default class chatScreenContainer extends Component {
             const { textMessage } = this.state;
             this.setState({ textMessage: '' }, () => {
                 onSendButtonPress(channelUrl, textMessage);
-                this.refs.chatSection.scrollTo({ y: 0 });
+                // this.refs.chatSection.scrollTo({ y: 0 });
             });
         }
     }
@@ -134,26 +148,27 @@ export default class chatScreenContainer extends Component {
         }
     }
 
+    renderSend(props){
+      return (
+        <Send {...props} >
+          <View style={{marginRight: 10, marginBottom: 5}}>
+            <Image source={{uri: 'https://image.flaticon.com/icons/svg/60/60525.svg'}} resizeMode={'center'}/>
+          </View>
+        </Send>
+      );
+    }
+
     render() {
         return (
-            <View style={styles.containerViewStyle}>
-                <View style={styles.messageListViewStyle}>
-                    <ListView
-                        ref='chatSection'
-                        enableEmptySections={true}
-                        renderRow={this._renderList}
-                        dataSource={this.state.messageList}
-                        onEndReachedThreshold={-100}
-                    />
-                </View>
-                <View style={styles.messageInputViewStyle}>
-                    <MessageInput
-                        onRightPress={this._onSendButtonPress}
-                        textMessage={this.state.textMessage}
-                        onChangeText={this._onTextMessageChanged}
-                    />
-                </View>
-            </View>
+            <GiftedChat
+              text={this.state.textMessage}
+              onInputTextChanged={text => this._onTextMessageChanged(text)}
+              messages={this.state.messageList}
+              onSend={this._onSendButtonPress}
+              user={{
+                _id: 1
+              }}
+            />
         )
     }
 }

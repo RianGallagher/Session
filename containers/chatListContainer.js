@@ -14,7 +14,6 @@ export default class chatScreenContainer extends React.Component {
     this.state = {
       list: []
     }
-    this.getOpenChats = this.getOpenChats.bind(this);
     this.navigateToChat = this.navigateToChat.bind(this);
   }
 
@@ -28,14 +27,7 @@ export default class chatScreenContainer extends React.Component {
   }
 
   navigateToChat(channelUrl){
-    console.log('navigate to chat', channelUrl);
     this.props.navigation.navigate('ChatScreen', { channelUrl: channelUrl});
-  }
-
-  getOpenChats = async() => {
-    this.state.list.forEach((channel) => {
-      console.log(channel.name);
-    })
   }
 
   render() {
@@ -43,7 +35,6 @@ export default class chatScreenContainer extends React.Component {
         <ChatList
           channelList={this.state.list}
           navigateToChat={this.navigateToChat}
-          getOpenChats={this.getOpenChats}
         />
       );
   }
