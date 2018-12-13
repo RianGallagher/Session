@@ -14,7 +14,7 @@ class SendbirdStore extends EventEmitter {
   }
   setUser(user) {
     this.state = { ...this.state, user: user };
-    this.emit('user_update');
+    this.emit('login_success');
   }
   setOpenChannels(list) {
     this.state = { ...this.state, list: list };
