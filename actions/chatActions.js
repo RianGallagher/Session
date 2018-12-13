@@ -50,7 +50,7 @@ const registerHandler = channelUrl => {
 
   channelHandler.onMessageReceived = (channel, message) => {
     if (channel.url === channelUrl) {
-      dispathcer.dispatch({
+      dispatcher.dispatch({
         type: 'MESSAGE_RECEIVED',
         payload: message
       });
@@ -58,7 +58,7 @@ const registerHandler = channelUrl => {
   };
   channelHandler.onMessageUpdated = (channel, message) => {
     if (channel.url === channelUrl) {
-      dispathcer.dispatch({
+      dispatcher.dispatch({
         type: 'MESSAGE_UPDATED',
         payload: message
       });
@@ -66,7 +66,7 @@ const registerHandler = channelUrl => {
   };
   channelHandler.onMessageDeleted = (channel, messageId) => {
     if (channel.url === channelUrl) {
-      dispathcer.dispatch({
+      dispatcher.dispatch({
         type: 'MESSAGE_DELETED',
         payload: messageId
       });
@@ -84,7 +84,7 @@ export const onSendButtonPress = (channelUrl, textMessage) => {
         textMessage,
         (message, error) => {
           if (error) {
-            dispathcer.dispatch({ type: 'SEND_MESSAGE_FAIL' });
+            dispatcher.dispatch({ type: 'SEND_MESSAGE_FAIL' });
           } else {
             dispatcher.dispatch({
               type: 'SEND_MESSAGE_SUCCESS',

@@ -24,8 +24,11 @@ class SendbirdStore extends EventEmitter {
     this.state = { ...this.state, messageList: list };
     this.emit('message_list_update');
   }
-  setSuccessMessage(newMessage){
-    this.state = {...this.state, messageList: [...[newMessage], ...this.state.messageList]}
+  setSuccessMessage(newMessage) {
+    this.state = {
+      ...this.state,
+      messageList: [...[newMessage], ...this.state.messageList]
+    };
     this.emit('message_list_update');
   }
   setReceiveMessage(newMessage) {
@@ -54,10 +57,10 @@ class SendbirdStore extends EventEmitter {
     this.emit('message_list_update');
   }
 
-  getUser(){
+  getUser() {
     return this.state.user;
   }
-  getUserId(){
+  getUserId() {
     return this.state.user.userId;
   }
   getOpenChannelList() {
@@ -85,7 +88,7 @@ class SendbirdStore extends EventEmitter {
         this.setSuccessMessage(action.message);
         break;
       case 'MESSAGE_RECEIVED':
-        this.setReceiveMessage(action.payload);
+        this.setSuccessMessage(action.payload);
         break;
       case 'MESSAGE_UPDATED':
         this.setUpdateMessage(action.payload);
