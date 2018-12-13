@@ -39,12 +39,15 @@ export default (AltLogin = props => {
             </TouchableHighlight>
           ) : null}
           {item.type == 'selectBand' ? (
-            <TouchableHighlight
-              onPress={() =>
-                props.selectFavBands(item.name, item.genre, item.code)
-              }
-            >
-              <Text />
+            <TouchableHighlight>
+              <Text
+                onPress={() =>
+                  props.selectFavBands(item.name, item.genre, item.code)
+                }
+                style={[styles.itemName, styles.selectButton]}
+              >
+                Tap to select!!!
+              </Text>
             </TouchableHighlight>
           ) : null}
         </View>
@@ -96,5 +99,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     width: 250,
     borderRadius: 30
+  },
+  selectButton: {
+    paddingTop: 25,
+    height: 45,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });

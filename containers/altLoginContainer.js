@@ -13,7 +13,8 @@ export default class altLoginContainer extends React.Component {
       max: 25,
       allItems: [],
       items: [],
-      favBands: []
+      artists: [],
+      genres: []
     };
     this.getRecommendations = this.getRecommendations.bind(this);
     this.selectFavBands = this.selectFavBands.bind(this);
@@ -30,13 +31,13 @@ export default class altLoginContainer extends React.Component {
     genres.forEach(genre => {
       allItems.push({ name: genre, code: '#3498db', type: 'genreExpand' });
     });
-
     allItems.unshift({
       name:
-        'Tell us what you love, tap on a genre to expand it, tap on an artist to select it.',
+        'Tell us what you love, tap on a genres text to expand it, tap on an artist to select it.',
       code: '#666',
       type: 'info'
     });
+
     this.setState({ allItems: allItems });
     let items = [];
     for (i = this.state.min; i <= this.state.max; i++) {
@@ -59,45 +60,70 @@ export default class altLoginContainer extends React.Component {
 
     tempItems = this.state.items;
     tempItems.find(function(item, i) {
-      if (item.name === genre) {
+      if (item.name === genre && item.code === '#3498db') {
         index = i;
         item.code = '#000080';
+      }
+    });
+    tempItems.find(function(item, i) {
+      if (item.name === genre) {
+        index2 = i;
       }
     });
 
     const maxRecommendations =
       recommendations.length < 3 ? recommendations.length : 3;
-    for (let i = 0; i < maxRecommendations; i++)
-      tempItems.splice(index + 1, 0, {
+    for (let i = 0; i < maxRecommendations; i++) {
+      tempItems.splice(index2 + 1, 0, {
         name: recommendations[i].artists[0].name,
         code: '#f39c12',
         genre: genre,
         type: 'selectBand'
       });
-    tempItems.join();
-    this.setState({ items: tempItems });
+      tempItems.join();
+      this.setState({ items: tempItems });
+    }
   }
 
   async selectFavBands(band, genre, code) {
-    let favBands = this.state.favBands;
+    let artists = this.state.artists;
+    let genres = this.state.genres;
     let tempItems = this.state.items;
     let exists = false;
-    favBands.find(function(item, i) {
-      if (item.name === band) {
+
+    artists.find(function(item, i) {
+      if (item === band) {
         index = i;
         exists = true;
       }
     });
-    tempItems.find(function(item, i) {
-      if (item.name === band) {
-        index = i;
-        item.code = '#A65200';
-      }
-    });
+
     if (exists === false) {
-      favBands.push({ name: band, genre: genre, code: '#A65200' });
-      this.setState({ favBands: favBands });
+      tempItems.find(function(item, i) {
+        if (item.name === band) {
+          item.code = '#A65200';
+        }
+      });
+
+      artists.push(band);
+      genres.push(genre);
+    } else {
+      artists.find(function(item, i) {
+        if (item === band) {
+          index = i;
+          artists.splice(index, 1);
+          genres.splice(index, 1);
+        }
+      });
+      tempItems.find(function(item, i) {
+        if (item.name === band && item.code === '#A65200') {
+          item.code = '#f39c12';
+        }
+      });
     }
+    this.setState({ tempItems: tempItems });
+    this.setState({ artists: artists });
+    this.setState({ genres: genres });
   }
 
   async addMoreBands() {
@@ -121,13 +147,26 @@ export default class altLoginContainer extends React.Component {
   }
 
   saveUserSelection = async () => {
+    function removeDuplicates(arr) {
+      let unique_array = arr.filter(function(elem, index, self) {
+        return index == self.indexOf(elem);
+      });
+      return unique_array;
+    }
     const username = sendbirdStore.getUserId();
-    const userTasteProfile = this.state.favBands;
-    axios.put(
-      'http://session-native.herokuapp.com/users/username/' +
-        username.toLowerCase(),
-      { tasteProfile: userTasteProfile }
-    );
+    const userTasteProfile = {
+      artists: this.state.artists,
+      genres: removeDuplicates(this.state.genres)
+    };
+    axios
+      .put(
+        'http://session-native.herokuapp.com/users/username/' +
+          username.toLowerCase(),
+        { tasteProfile: userTasteProfile }
+      )
+      .then(res => {
+        console.log(res.data);
+      });
     this.props.navigation.navigate('ProfileScreen');
   };
 
