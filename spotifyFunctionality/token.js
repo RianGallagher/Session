@@ -10,23 +10,26 @@ export default async (code, redirectUrl) => {
     method: 'POST',
     headers: {
       Authorization: 'Basic ' + credentials,
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
-    body: 'grant_type=authorization_code&' +
-          'code=' + code +
-          '&redirect_uri=' + redirectUrl,
+    body:
+      'grant_type=authorization_code&' +
+      'code=' +
+      code +
+      '&redirect_uri=' +
+      redirectUrl
   });
   const json = await res.json();
   token = json.access_token;
   return token;
-}
+};
 
-export async function basicToken (){
+export async function basicToken() {
   const res = await fetch(apiPrefix, {
     method: 'POST',
     headers: {
       Authorization: 'Basic ' + credentials,
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: 'grant_type=client_credentials&'
   });

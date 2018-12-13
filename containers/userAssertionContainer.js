@@ -6,26 +6,36 @@ import sendbirdStore from '../stores/sendbirdStore';
 import axios from 'axios';
 
 export default class userAssertionContainer extends React.Component {
-  constructor(props){
-    super(props)
-      this.state = {
-        token: spotifyStore.getToken(),
-        itemsOffset: 0
-      }
-      this.storeUserChoice = this.storeUserChoice.bind(this);
+  constructor(props) {
+    super(props);
+    this.state = {
+      token: spotifyStore.getToken(),
+      itemsOffset: 0
+    };
+    this.storeUserChoice = this.storeUserChoice.bind(this);
   }
 
-  storeUserChoice = async() => {
-    console.log(this.state.token, this.state.itemsOffset)
-    const userTasteProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
-    const username = sendbirdStore.getUserId()
-    axios.put('http://session-native.herokuapp.com/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
-    .then(res => {console.log(res.data)})
+  storeUserChoice = async () => {
+    const userTasteProfile = await soundProfile.getUsersTop(
+      this.state.token,
+      this.state.itemsOffset,
+      50
+    );
+    let username = await sendbirdStore.getUserId();
+    username = username.toLowerCase();
+    axios
+      .put('http://session-native.herokuapp.com/users/username/' + username, {
+        tasteProfile: userTasteProfile
+      })
+      .then(res => {})
+      .catch(err => {
+        console.log(err);
+      });
     this.props.navigation.navigate('ProfileScreen');
-  }
+  };
 
-  render(){
-    return(
+  render() {
+    return (
       <UserAssertion
         storeUserChoice={this.storeUserChoice}
         navigation={this.props.navigation}
