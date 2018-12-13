@@ -15,60 +15,60 @@ const RootStack = createStackNavigator(
     Home: {
       screen: loginContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     SpotifyInitial: {
       screen: spotifyLoginContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     UserAssertion: {
       screen: userAssertionContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     AltLogin: {
       screen: altLoginContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     ProfileScreen: {
       screen: profileScreenContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     ChatList: {
       screen: chatListContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     Events: {
       screen: eventsContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     SuggestedList: {
       screen: suggestedListContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     },
     ChatScreen: {
       screen: chatScreenContainer,
       navigationOptions: {
-        header: null,
+        header: null
       }
     }
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'Home'
   }
 );
 
