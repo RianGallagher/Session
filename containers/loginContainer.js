@@ -30,12 +30,6 @@ export default class loginContainer extends React.Component {
     this.passwordReminder = this.passwordReminder.bind(this);
   }
 
-  // componentDidMount(){
-  //   sendbirdStore.on('login_success', () => {
-  //     this.props.navigation.navigate('AltLogin');
-  //   })
-  // }
-
   handleEmailChange = emailText => {
     this.setState({ email: emailText.toLowerCase() });
   };
