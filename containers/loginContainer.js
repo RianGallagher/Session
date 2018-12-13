@@ -54,13 +54,22 @@ export default class loginContainer extends React.Component {
         'Please check all fields have been filled'
       );
     } else {
-      loginActions.sendbirdLogin(
-        this.state.username.replace(/\s/g, ''),
-        this.state.email,
-        this.state.password
-      );
-      spotifyActions.setToken(await basicToken());
-      this.props.navigation.navigate('AltLogin');
+      axios.get('http://session-native.herokuapp.com/users/username/' + this.state.username)
+        .then(res => {
+          if (res.data.length === 0) {
+            loginActions.sendbirdLogin(
+              this.state.username.replace(/\s/g, ''),
+              this.state.email,
+              this.state.password
+            );
+            this.props.navigation.navigate('AltLogin');
+          } else {
+            Alert.alert(
+              'Oh no! Username already exists:',
+              'please choose a different username'
+            );
+          }
+        });
     }
   };
 
