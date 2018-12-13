@@ -19,7 +19,7 @@ export default class userAssertionContainer extends React.Component {
     console.log(this.state.token, this.state.itemsOffset)
     const userTasteProfile =  await soundProfile.getUsersTop(this.state.token, this.state.itemsOffset, 50);
     const username = sendbirdStore.getUserId()
-    axios.put('http://192.168.0.73:2018/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
+    axios.put('http://session-native.herokuapp.com/users/username/' + (username.toLowerCase()), {'tasteProfile': userTasteProfile})
     .then(res => {console.log(res.data)})
     this.props.navigation.navigate('ProfileScreen');
   }

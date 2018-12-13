@@ -6,10 +6,10 @@ import axios from 'axios';
 export const sendbirdLogin = (userId, email='', password='') => {
   sbConnect(userId)
   .then((user) => {
-    axios.get('http://192.168.0.73:2018/users/username/' + userId)
+    axios.get('http://session-native.herokuapp.com/users/username/' + userId)
     .then((res) => {
       if(res.data.length === 0){
-        axios.post('http://192.168.0.73:2018/users', {
+        axios.post('http://session-native.herokuapp.com/users', {
             email: email,
             password: password,
             username: userId,
