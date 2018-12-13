@@ -12,8 +12,7 @@ export default class chatScreenContainer extends React.Component {
     super(props);
     this.state = {
       list: []
-    };
-    this.getOpenChats = this.getOpenChats.bind(this);
+    }
     this.navigateToChat = this.navigateToChat.bind(this);
   }
 
@@ -29,23 +28,16 @@ export default class chatScreenContainer extends React.Component {
     });
   }
 
-  navigateToChat(channelUrl) {
-    this.props.navigation.navigate('ChatScreen', { channelUrl: channelUrl });
+  navigateToChat(channelUrl){
+    this.props.navigation.navigate('ChatScreen', { channelUrl: channelUrl});
   }
 
-  getOpenChats = async () => {
-    this.state.list.forEach(channel => {
-      console.log(channel.name);
-    });
-  };
-
   render() {
-    return (
-      <ChatList
-        channelList={this.state.list}
-        navigateToChat={this.navigateToChat}
-        getOpenChats={this.getOpenChats}
-      />
-    );
+      return (
+        <ChatList
+          channelList={this.state.list}
+          navigateToChat={this.navigateToChat}
+        />
+      );
   }
 }

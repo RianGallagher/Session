@@ -1,21 +1,7 @@
-// import React, { Component } from 'react';
-// import ChatScreen from '../components/ChatScreen';
-//
-// export default class chatScreenContainer extends React.Component{
-//   constructor(){
-//     super();
-//   }
-//
-//   render(){
-//     return(
-//       <ChatScreen />
-//     )
-//   }
-// }
-
 import React, { Component } from 'react';
 import sendbirdStore from '../stores/sendbirdStore';
-import { View, ListView } from 'react-native';
+import { GiftedChat, Send } from 'react-native-gifted-chat';
+import { View, Image, Platform } from 'react-native';
 import {
   initChatScreen,
   createChatHandler,
@@ -23,11 +9,7 @@ import {
   getPrevMessageList,
   channelExit
 } from '../actions/chatActions';
-
-import { Button } from 'react-native-elements';
-import { TextItem } from '../components/messages/MessageItem';
-import { MessageInput } from '../components/messages/MessageInput';
-import { Message } from '../components/messages/Message';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {
   sbGetOpenChannel,
@@ -36,49 +18,51 @@ import {
 } from '../sendbirdActions';
 
 export default class chatScreenContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      previousMessageListQuery: null,
-      textMessage: '',
-      messageList: ds.cloneWithRows(
-        sbAdjustMessageList(sendbirdStore.getMessageList())
-      )
-    };
-  }
-
-  componentDidMount() {
-    sendbirdStore.on('message_list_update', () => {
-      this.setState({
-        messageList: ds.cloneWithRows(
-          sbAdjustMessageList(sendbirdStore.getMessageList())
-        )
-      });
-    });
-    initChatScreen();
-    const channelUrl = this.props.navigation.getParam('channelUrl');
-    sbGetOpenChannel(channelUrl).then(channel => {
-      this._componentInit();
-    });
-  }
-
-  _componentInit = () => {
-    const channelUrl = this.props.navigation.getParam('channelUrl');
-    createChatHandler(channelUrl);
-    this._getMessageList(true);
-  };
-
-  _onBackButtonPress = () => {
-    const channelUr = this.props.navigation.getParam('channelUrl');
-    channelExit(channelUrl);
-  };
-
-  componentWillReceiveProps(props) {
-    const { exit } = props;
-    if (exit) {
-      this.props.navigation.goBack();
+    constructor(props) {
+      super(props);
+      this.state = {
+          previousMessageListQuery: null,
+          textMessage: '',
+          messageList: []
+      }
     }
-  }
+
+    componentDidMount() {
+        sendbirdStore.on('message_list_update', () => {
+          let newList = [];
+          sendbirdStore.getMessageList().forEach((message) => {
+            newList.push({
+              _id: message.messageId,
+              text: message.message,
+              createdAt: message.createdAt,
+              user: {
+                _id: message._sender.userId,
+                name: message._sender.userId,
+                avatar: message._sender.profileUrl
+              }
+            });
+          });
+          this.setState({messageList: newList});
+        });
+        initChatScreen();
+
+        const channelUrl = this.props.navigation.getParam('channelUrl');
+        sbGetOpenChannel(channelUrl)
+        .then((channel) => {
+            this._componentInit();
+        })
+    }
+
+    _componentInit = () => {
+        const channelUrl = this.props.navigation.getParam('channelUrl');
+        createChatHandler(channelUrl);
+        this._getMessageList(true);
+    }
+
+    _onBackButtonPress = () => {
+        const channelUr = this.props.navigation.getParam('channelUrl');
+        channelExit(channelUrl);
+    }
 
   _onTextMessageChanged = textMessage => {
     this.setState({ textMessage });
@@ -100,108 +84,46 @@ export default class chatScreenContainer extends Component {
     } else {
       getPrevMessageList(this.state.previousMessageListQuery);
     }
-  };
+  }
 
-  _onSendButtonPress = () => {
-    if (this.state.textMessage) {
-      const channelUrl = this.props.navigation.getParam('channelUrl');
-      const { textMessage } = this.state;
-      this.setState({ textMessage: '' }, () => {
-        onSendButtonPress(channelUrl, textMessage);
-        this.refs.chatSection.scrollTo({ y: 0 });
-      });
+    _onSendButtonPress = () => {
+        if (this.state.textMessage) {
+            const channelUrl = this.props.navigation.getParam('channelUrl');
+            const { textMessage } = this.state;
+            this.setState({ textMessage: '' }, () => {
+                onSendButtonPress(channelUrl, textMessage);
+            });
+        }
     }
-  };
 
-  _renderList = rowData => {
-    // const { channel } = this.state;
-    if (rowData.isUserMessage()) {
+    renderSend(props){
       return (
-        <Message
-          key={rowData.messageId ? rowData.messageId : rowData.reqId}
-          isShow={rowData.sender.isShow}
-          isUser={rowData.isUser}
-          profileUrl={rowData.sender.profileUrl.replace('http://', 'https://')}
-          nickname={rowData.sender.nickname}
-          time={rowData.time}
-          message={
-            <TextItem isUser={rowData.isUser} message={rowData.message} />
-          }
-        />
+        <Send {...props} >
+          <View style={{marginRight: 10, marginBottom: 5}}>
+            <Image style={{width:40, height:40}} source={{uri: 'https://cdn3.iconfinder.com/data/icons/mail-1-glyph/512/45-Send-512.png'}} />
+          </View>
+        </Send>
       );
-    } else {
-      // FileMessage/AdminMessage
-      return <View />;
     }
-  };
 
-  render() {
-    return (
-      <View style={styles.containerViewStyle}>
-        <View style={styles.messageListViewStyle}>
-          <ListView
-            ref="chatSection"
-            enableEmptySections={true}
-            renderRow={this._renderList}
-            dataSource={this.state.messageList}
-            onEndReachedThreshold={-100}
-          />
-        </View>
-        <View style={styles.messageInputViewStyle}>
-          <MessageInput
-            onRightPress={this._onSendButtonPress}
-            textMessage={this.state.textMessage}
-            onChangeText={this._onTextMessageChanged}
-          />
-        </View>
-      </View>
-    );
-  }
+    render() {
+        return (
+          <View style={{flex: 1}}>
+            <GiftedChat
+              text={this.state.textMessage}
+              onInputTextChanged={text => this._onTextMessageChanged(text)}
+              messages={this.state.messageList}
+              onSend={this._onSendButtonPress}
+              user={{
+                _id: sendbirdStore.getUserId(),
+                avatar: sendbirdStore.getUser().profileUrl
+              }}
+
+              renderSend={this.renderSend}
+              alwaysShowSend
+            />
+          {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={25}/> : null }
+          </View>
+        )
+    }
 }
-
-const ds = new ListView.DataSource({
-  rowHasChanged: (r1, r2) => r1 !== r2
-});
-
-function mapStateToProps({ chat }) {
-  const { exit } = chat;
-  list = ds.cloneWithRows(sbAdjustMessageList(chat.list));
-  return { list, exit };
-}
-
-// export default connect(
-//     mapStateToProps,
-//     {
-//         initChatScreen,
-//         createChatHandler,
-//         onSendButtonPress,
-//         getPrevMessageList,
-//         channelExit
-//     }
-// )(chatScreenContainer);
-
-const styles = {
-  renderTypingViewStyle: {
-    flexDirection: 'row',
-    marginLeft: 14,
-    marginRight: 14,
-    marginTop: 4,
-    marginBottom: 0,
-    paddingBottom: 0,
-    height: 14
-  },
-  containerViewStyle: {
-    backgroundColor: '#fff',
-    flex: 1
-  },
-  messageListViewStyle: {
-    flex: 10,
-    transform: [{ scaleY: -1 }]
-  },
-  messageInputViewStyle: {
-    flex: 1,
-    marginBottom: 8,
-    flexDirection: 'column',
-    justifyContent: 'center'
-  }
-};

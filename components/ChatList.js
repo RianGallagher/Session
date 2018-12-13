@@ -13,8 +13,8 @@ import {
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
-export default (ChatList = props => {
-  return (
+export default ChatList = (props) => {
+  return(
     <List>
       <FlatList
         data={props.channelList}
@@ -30,7 +30,7 @@ export default (ChatList = props => {
       />
     </List>
   );
-});
+};
 
 const styles = StyleSheet.create({
   container: {

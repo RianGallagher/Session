@@ -24,15 +24,8 @@ class SendbirdStore extends EventEmitter {
     this.state = { ...this.state, messageList: list };
     this.emit('message_list_update');
   }
-  setSuccessMessage(newMessage) {
-    const sendSuccessList = this.state.messageList.map(message => {
-      if (message.reqId.toString() === newMessage.reqId.toString()) {
-        return newMessage;
-      } else {
-        return message;
-      }
-    });
-    this.state = { ...this.state, messageList: sendSuccessList };
+  setSuccessMessage(newMessage){
+    this.state = {...this.state, messageList: [...[newMessage], ...this.state.messageList]}
     this.emit('message_list_update');
   }
   setReceiveMessage(newMessage) {
@@ -61,7 +54,10 @@ class SendbirdStore extends EventEmitter {
     this.emit('message_list_update');
   }
 
-  getUserId() {
+  getUser(){
+    return this.state.user;
+  }
+  getUserId(){
     return this.state.user.userId;
   }
   getOpenChannelList() {
