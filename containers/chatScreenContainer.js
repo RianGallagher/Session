@@ -3,18 +3,18 @@ import sendbirdStore from '../stores/sendbirdStore';
 import { GiftedChat, Send } from 'react-native-gifted-chat';
 import { View, Image, Platform } from 'react-native';
 import {
-    initChatScreen,
-    createChatHandler,
-    onSendButtonPress,
-    getPrevMessageList,
-    channelExit,
+  initChatScreen,
+  createChatHandler,
+  onSendButtonPress,
+  getPrevMessageList,
+  channelExit
 } from '../actions/chatActions';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {
-    sbGetOpenChannel,
-    sbCreatePreviousMessageListQuery,
-    sbAdjustMessageList
+  sbGetOpenChannel,
+  sbCreatePreviousMessageListQuery,
+  sbAdjustMessageList
 } from '../sendbirdActions';
 
 export default class chatScreenContainer extends Component {
@@ -64,34 +64,27 @@ export default class chatScreenContainer extends Component {
         channelExit(channelUrl);
     }
 
-    componentWillReceiveProps(props) {
-        const { exit } = props;
-        if (exit) {
-            this.props.navigation.goBack();
-        }
-    }
+  _onTextMessageChanged = textMessage => {
+    this.setState({ textMessage });
+  };
 
-    _onTextMessageChanged = (textMessage) => {
-        this.setState({ textMessage });
+  _getMessageList = init => {
+    if (!this.state.previousMessageListQuery && !init) {
+      return;
     }
-
-    _getMessageList = (init) => {
-        if (!this.state.previousMessageListQuery && !init) {
-            return;
-        }
-        const channelUrl = this.props.navigation.getParam('channelUrl');
-        if (init) {
-            sbCreatePreviousMessageListQuery(channelUrl)
-            .then((previousMessageListQuery) => {
-                this.setState({ previousMessageListQuery }, () => {
-                    getPrevMessageList(this.state.previousMessageListQuery);
-                });
-            })
-            .catch((error) => this.props.navigation.goBack() );
-        } else {
+    const channelUrl = this.props.navigation.getParam('channelUrl');
+    if (init) {
+      sbCreatePreviousMessageListQuery(channelUrl)
+        .then(previousMessageListQuery => {
+          this.setState({ previousMessageListQuery }, () => {
             getPrevMessageList(this.state.previousMessageListQuery);
-        }
+          });
+        })
+        .catch(error => this.props.navigation.goBack());
+    } else {
+      getPrevMessageList(this.state.previousMessageListQuery);
     }
+  }
 
     _onSendButtonPress = () => {
         if (this.state.textMessage) {

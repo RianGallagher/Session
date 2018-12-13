@@ -5,10 +5,9 @@ import { sbCreateOpenChannelListQuery } from '../sendbirdActions';
 import * as openChannelActions from '../actions/openChannelActions';
 import sendbirdStore from '../stores/sendbirdStore';
 
-const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+const ds = new ListView.DataSource({ rowHasChanged: (r1, r2) => r1 !== r2 });
 
 export default class chatScreenContainer extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -17,13 +16,16 @@ export default class chatScreenContainer extends React.Component {
     this.navigateToChat = this.navigateToChat.bind(this);
   }
 
-  componentWillMount(){
-    openChannelListQuery= sbCreateOpenChannelListQuery();
+  componentWillMount() {
+    openChannelListQuery = sbCreateOpenChannelListQuery();
     openChannelActions.getOpenChannelList(openChannelListQuery);
     sendbirdStore.on('open_channel_list_update', () => {
-      const newList = [...this.state.list, ...sendbirdStore.getOpenChannelList()];
-      this.setState({list: newList});
-    })
+      const newList = [
+        ...this.state.list,
+        ...sendbirdStore.getOpenChannelList()
+      ];
+      this.setState({ list: newList });
+    });
   }
 
   navigateToChat(channelUrl){
