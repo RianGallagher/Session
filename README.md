@@ -1,3 +1,3 @@
-## Music Project 2018 (CS322)
+## Session (CS322)
 
-Base Implementation for a Forum app based on a listener's Spotify history/Choice of Musical proclivities.
+A Music based social platform with in-built event search functionality.
