@@ -57,44 +57,6 @@ export default class chatScreenContainer extends React.Component {
       });
   }
 
-  // componentWillMount() {
-  //   openChannelListQuery = sbCreateOpenChannelListQuery();
-  //   openChannelActions.getOpenChannelList(openChannelListQuery);
-  //   let tasteProfileList = [];
-  //   sendbirdStore.on('open_channel_list_update', () => {
-  //     const username = sendbirdStore.getUserId()
-  //     axios.get('http://session-native.herokuapp.com/users/username/' + username)
-  //     .then((res) => {
-  //       const tasteProfile = res.data[0].user.tasteProfile.genres;
-  //
-  //       tasteProfile.forEach((genre) => {
-  //         console.log(genre)
-  //         sbGetOpenChannel(genre)
-  //         .then(channel => tasteProfileList.push(channel));
-  //       })
-  //     })
-  //   })
-  //
-  //
-  //
-  //
-  //       // const openChannels = sendbirdStore.getOpenChannelList();
-  //       // console.log('includes?', typeof tasteProfile.includes('Pop'));
-  //       // const tasteProfileList = openChannels.filter((elem) => {
-  //       //   console.log(elem.name)
-  //       //   tasteProfile.includes(elem.name)
-  //       // });
-  //       // console.log('tasteProfile', tasteProfileList);
-  //   const newList = [
-  //     ...this.state.list,
-  //     ...tasteProfileList
-  //   ];
-  //   this.setState({
-  //     list: newList,
-  //     openChannelListQuery: openChannelListQuery
-  //   });
-  // }
-
   getMoreChannels() {
     openChannelActions.getOpenChannelList(this.state.openChannelListQuery);
   }
