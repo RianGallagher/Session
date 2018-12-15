@@ -9,8 +9,7 @@ import {
   Image,
   ImageBackground,
   Alert,
-  FlatList,
-  Container
+  FlatList
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
