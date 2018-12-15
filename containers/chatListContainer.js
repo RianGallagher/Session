@@ -15,26 +15,46 @@ export default class chatScreenContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      fullList: [],
       list: [],
-      openChannelListQuery: {}
+      openChannelListQuery: sbCreateOpenChannelListQuery()
     };
     this.navigateToChat = this.navigateToChat.bind(this);
     this.getMoreChannels = this.getMoreChannels.bind(this);
   }
 
   componentWillMount() {
-    openChannelListQuery = sbCreateOpenChannelListQuery();
-    openChannelActions.getFullOpenChannelList(openChannelListQuery);
+    openChannelActions.getOpenChannelList(this.state.openChannelListQuery);
     sendbirdStore.on('open_channel_list_update', () => {
       const newList = [
-        ...this.state.list,
+        ...this.state.fullList,
         ...sendbirdStore.getOpenChannelList()
       ];
-      this.setState({
-        list: newList,
-        openChannelListQuery: openChannelListQuery
+
+      this.setState({ fullList: newList }, () => {
+        console.log('after set state', this.state.openChannelListQuery.hasNext);
+        if (this.state.openChannelListQuery.hasNext) this.getMoreChannels();
+        else {
+          this.createPersonalList();
+        }
       });
     });
+  }
+
+  createPersonalList() {
+    const username = sendbirdStore.getUserId();
+    axios
+      .get('http://session-native.herokuapp.com/users/username/' + username)
+      .then(res => {
+        const tasteProfile = res.data[0].user.tasteProfile.genres;
+
+        const newList = this.state.fullList.filter(elem => {
+          console.log('elem name', elem.name, tasteProfile.includes(elem.name));
+          return tasteProfile.includes(elem.name);
+        });
+        console.log('new list', newList);
+        this.setState({ list: newList });
+      });
   }
 
   // componentWillMount() {
