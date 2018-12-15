@@ -32,7 +32,6 @@ export default class chatScreenContainer extends React.Component {
       ];
 
       this.setState({ fullList: newList }, () => {
-        console.log('after set state', this.state.openChannelListQuery.hasNext);
         if (this.state.openChannelListQuery.hasNext) this.getMoreChannels();
         else {
           this.createPersonalList();
@@ -49,10 +48,8 @@ export default class chatScreenContainer extends React.Component {
         const tasteProfile = res.data[0].user.tasteProfile.genres;
 
         const newList = this.state.fullList.filter(elem => {
-          console.log('elem name', elem.name, tasteProfile.includes(elem.name));
           return tasteProfile.includes(elem.name);
         });
-        console.log('new list', newList);
         this.setState({ list: newList });
       });
   }
