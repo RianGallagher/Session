@@ -11,9 +11,11 @@ export default class chatScreenContainer extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      list: []
-    }
+      list: [],
+      openChannelListQuery: {}
+    };
     this.navigateToChat = this.navigateToChat.bind(this);
+    this.getMoreChannels = this.getMoreChannels.bind(this);
   }
 
   componentWillMount() {
@@ -24,20 +26,28 @@ export default class chatScreenContainer extends React.Component {
         ...this.state.list,
         ...sendbirdStore.getOpenChannelList()
       ];
-      this.setState({ list: newList });
+      this.setState({
+        list: newList,
+        openChannelListQuery: openChannelListQuery
+      });
     });
   }
 
-  navigateToChat(channelUrl){
-    this.props.navigation.navigate('ChatScreen', { channelUrl: channelUrl});
+  getMoreChannels() {
+    openChannelActions.getOpenChannelList(this.state.openChannelListQuery);
+  }
+
+  navigateToChat(channelUrl) {
+    this.props.navigation.navigate('ChatScreen', { channelUrl: channelUrl });
   }
 
   render() {
-      return (
-        <ChatList
-          channelList={this.state.list}
-          navigateToChat={this.navigateToChat}
-        />
-      );
+    return (
+      <ChatList
+        channelList={this.state.list}
+        getMoreChannels={this.getMoreChannels}
+        navigateToChat={this.navigateToChat}
+      />
+    );
   }
 }

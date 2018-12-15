@@ -9,28 +9,34 @@ import {
   Image,
   ImageBackground,
   Alert,
-  FlatList
+  FlatList,
+  Container
 } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 
-export default ChatList = (props) => {
-  return(
-    <List>
-      <FlatList
-        data={props.channelList}
-        keyExtractor={item => item.url}
-        renderItem={({ item }) => (
-          <ListItem
-            roundAvatar
-            title={item.name}
-            avatar={{ uri: item.coverUrl }}
-            onPress={() => props.navigateToChat(item.url)}
-          />
-        )}
-      />
-    </List>
+export default (ChatList = props => {
+  return (
+    <View style={{ flex: 1 }}>
+      <View style={{ flex: 10 }}>
+        <FlatList
+          data={props.channelList}
+          keyExtractor={item => item.url}
+          renderItem={({ item }) => (
+            <ListItem
+              roundAvatar
+              title={item.name}
+              avatar={{ uri: item.coverUrl }}
+              onPress={() => props.navigateToChat(item.url)}
+            />
+          )}
+        />
+      </View>
+      <View style={{ flex: 0.5 }}>
+        <Button onPress={props.getMoreChannels} title="More" />
+      </View>
+    </View>
   );
-};
+});
 
 const styles = StyleSheet.create({
   container: {
