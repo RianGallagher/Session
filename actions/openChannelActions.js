@@ -17,21 +17,3 @@ export const getOpenChannelList = openChannelListQuery => {
     dispatcher.dispatch({ type: OPEN_CHANNEL_LIST_FAIL });
   }
 };
-
-export const getFullOpenChannelList = openChannelListQuery => {
-  hasNext = true;
-  while (hasNext) {
-    console.log('loop');
-    sbGetOpenChannelList(openChannelListQuery)
-      .then(channels => {
-        dispatcher.dispatch({
-          type: 'OPEN_CHANNEL_LIST_SUCCESS',
-          list: channels
-        });
-        hasNext = openChannelListQuery.hasNext;
-      })
-      .catch(error =>
-        dispatcher.dispatch({ type: 'OPEN_CHANNEL_LIST_FAIL', error: error })
-      );
-  }
-};
