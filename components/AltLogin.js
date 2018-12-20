@@ -45,9 +45,7 @@ export default (AltLogin = props => {
                   props.selectFavBands(item.name, item.genre, item.code)
                 }
                 style={[styles.itemName, styles.selectButton]}
-              >
-                Tap to select!!!
-              </Text>
+              />
             </TouchableHighlight>
           ) : null}
         </View>
