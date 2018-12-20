@@ -9,6 +9,7 @@ import eventsContainer from './containers/eventsContainer';
 import suggestedListContainer from './containers/suggestedListContainer';
 import chatListContainer from './containers/chatListContainer';
 import chatScreenContainer from './containers/chatScreenContainer';
+console.disableYellowBox = true;
 
 const RootStack = createStackNavigator(
   {
